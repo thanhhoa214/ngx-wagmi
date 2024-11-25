@@ -13,10 +13,12 @@ export function injectConnectors(parameters: InjectConnectorsParameters = {}): S
   const config = injectConfig(parameters);
   const connectors = signal<InjectConnectorsReturnType>(getConnectors(config));
 
-  effect(() =>
-    watchConnectors(config, {
-      onChange: (newConnectors) => connectors.set(newConnectors),
-    }),
+  effect((onClean) =>
+    onClean(
+      watchConnectors(config, {
+        onChange: (newConnectors) => connectors.set(newConnectors),
+      }),
+    ),
   );
 
   return connectors.asReadonly();

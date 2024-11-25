@@ -13,10 +13,12 @@ export function injectConnections(parameters: UseConnectionsParameters = {}) {
   const config = injectConfig(parameters);
   const conns = signal(getConnections(config));
 
-  effect(() =>
-    watchConnections(config, {
-      onChange: (newAccount) => conns.set(newAccount),
-    }),
+  effect((onClean) =>
+    onClean(
+      watchConnections(config, {
+        onChange: (newAccount) => conns.set(newAccount),
+      }),
+    ),
   );
 
   return conns.asReadonly();

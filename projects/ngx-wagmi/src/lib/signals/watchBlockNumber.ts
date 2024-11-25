@@ -1,8 +1,6 @@
 import { effect } from '@angular/core';
-
 import { type Config, type ResolvedRegister, watchBlockNumber, type WatchBlockNumberParameters } from '@wagmi/core';
 import type { UnionCompute, UnionExactPartial } from '@wagmi/core/internal';
-
 import type { ConfigParameter, EnabledParameter } from '../types/properties.js';
 import { injectChainId } from './chainId';
 import { injectConfig } from './config';
@@ -26,13 +24,15 @@ export function injectWatchBlockNumber<
   const configChainId = injectChainId({ config });
   const chainId = parameters.chainId ?? configChainId;
 
-  effect(() => {
+  effect((onClean) => {
     if (!enabled) return;
     if (!onBlockNumber) return;
-    return watchBlockNumber(config, {
-      ...(rest as any),
-      chainId,
-      onBlockNumber,
-    });
+    return onClean(
+      watchBlockNumber(config, {
+        ...(rest as any),
+        chainId,
+        onBlockNumber,
+      }),
+    );
   });
 }
