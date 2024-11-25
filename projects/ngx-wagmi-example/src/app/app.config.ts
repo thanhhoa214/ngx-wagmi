@@ -17,7 +17,6 @@ const defaultConfig = createConfig({
     [mainnet.id]: http(),
     [base.id]: http(),
   },
-  ssr: true,
 });
 
 export const appConfig: ApplicationConfig = {

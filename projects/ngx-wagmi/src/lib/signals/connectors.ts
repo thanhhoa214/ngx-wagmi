@@ -9,8 +9,8 @@ export type InjectConnectorsParameters = ConfigParameter;
 
 export type InjectConnectorsReturnType = GetConnectorsReturnType;
 
-export function injectConnectors(parameters: InjectConnectorsParameters = {}): Signal<InjectConnectorsReturnType> {
-  const config = injectConfig(parameters);
+export function injectConnectors(): Signal<InjectConnectorsReturnType> {
+  const config = injectConfig();
   const connectors = signal<InjectConnectorsReturnType>(getConnectors(config));
 
   effect((onClean) =>

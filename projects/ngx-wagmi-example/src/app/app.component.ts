@@ -4,6 +4,7 @@ import {
   injectAccount,
   injectAccountEffect,
   injectBalance,
+  injectBlock,
   injectChainId,
   injectChains,
   injectConfig,
@@ -12,6 +13,7 @@ import {
   injectDisconnect,
   injectReconnect,
   injectSwitchChain,
+  injectWatchBlockNumber,
   injectWatchBlocks,
 } from 'ngx-wagmi';
 
@@ -25,7 +27,8 @@ import { Chain } from '@wagmi/core/chains';
     <ul>
       <li>Account: {{ account().address }}</li>
       <li>Chain ID: {{ chainId() }}</li>
-      <!-- <li>Current block: {{ block.data()?.number }}</li> -->
+      <li>Current block: {{ block.data()?.number }}</li>
+      <!-- <li>Current block no: {{ blockNumber.data() }}</li> -->
       <li>
         Balance: {{ balance.data()?.symbol }}{{ balance.data()?.value }}, {{ balance.isLoading() }},
         {{ balance.error() }}
@@ -33,11 +36,10 @@ import { Chain } from '@wagmi/core/chains';
     </ul>
 
     <br />
-    <h3>Connection</h3>
+    <h3>Connections</h3>
     @for (item of connectors(); track item.id) {
       <button (click)="item.connect()">Connect to {{ item.id }}</button>
     }
-    <br />
     <button (click)="connect.connect({ connector: injectedConnector })">Connect</button>
     <button (click)="disconnectM.disconnect()">Disconnect</button>
 
@@ -74,10 +76,13 @@ export class AppComponent {
   reconnect = injectReconnect();
 
   watchBlocks = injectWatchBlocks(() => ({
-    onBlock: (block) => console.log(block.number),
+    onBlock: (block) => console.log('block.number', block.number),
   }));
 
-  // block = injectBlock();
+  block = injectBlock(() => ({ watch: true }));
+  watchBlockNumber = injectWatchBlockNumber(() => ({
+    onBlockNumber: (blockNumber) => console.log('blockNumber', blockNumber),
+  }));
 
   readonly injectedConnector = injected();
 
