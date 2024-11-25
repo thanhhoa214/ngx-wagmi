@@ -19,6 +19,8 @@ import type {
 } from '@wagmi/core/internal';
 import { hashFn } from '@wagmi/core/query';
 
+export const emptyObjFn = () => ({});
+
 export type InjectMutationParameters<
   data = unknown,
   error = Error,
@@ -84,12 +86,12 @@ export function injectQuery<
   parameters: InjectQueryParameters<queryFnData, error, data, queryKey> & {
     queryKey: QueryKey;
   }
-): InjectQueryReturnType<data, error> {
-  const result = tanstack_injectQuery({
+) {
+  const result = tanstack_injectQuery(() => ({
     ...(parameters as any),
     queryKeyHashFn: hashFn, // for bigint support
-  }) as unknown as InjectQueryReturnType<data, error>;
-  result.queryKey = parameters.queryKey;
+  }));
+  // result.queryKey = parameters.queryKey;
   return result;
 }
 

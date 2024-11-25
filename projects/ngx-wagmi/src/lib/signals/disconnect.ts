@@ -1,14 +1,14 @@
 import { computed } from '@angular/core';
 
 import { injectMutation } from '@tanstack/angular-query-experimental';
-import type { ReconnectErrorType } from '@wagmi/core';
+import type { DisconnectErrorType } from '@wagmi/core';
 import type { Compute } from '@wagmi/core/internal';
 import {
-  type ReconnectData,
-  type ReconnectMutate,
-  type ReconnectMutateAsync,
-  reconnectMutationOptions,
-  type ReconnectVariables,
+  type DisconnectData,
+  type DisconnectMutate,
+  type DisconnectMutateAsync,
+  disconnectMutationOptions,
+  type DisconnectVariables,
 } from '@wagmi/core/query';
 
 import type { ConfigParameter } from '../types/properties';
@@ -19,40 +19,38 @@ import {
 } from '../utils/query';
 import { injectConfig } from './config';
 
-('inject client');
-
-export type InjectReconnectParameters<context = unknown> = Compute<
+export type InjectDisconnectParameters<context = unknown> = Compute<
   ConfigParameter & {
     mutation?:
       | InjectMutationParameters<
-          ReconnectData,
-          ReconnectErrorType,
-          ReconnectVariables,
+          DisconnectData,
+          DisconnectErrorType,
+          DisconnectVariables,
           context
         >
       | undefined;
   }
 >;
 
-export type InjectReconnectReturnType<context = unknown> = Compute<
+export type InjectDisconnectReturnType<context = unknown> = Compute<
   InjectMutationReturnType<
-    ReconnectData,
-    ReconnectErrorType,
-    ReconnectVariables,
+    DisconnectData,
+    DisconnectErrorType,
+    DisconnectVariables,
     context
   > & {
-    reconnect: ReconnectMutate<context>;
-    reconnectAsync: ReconnectMutateAsync<context>;
+    disconnect: DisconnectMutate<context>;
+    disconnectAsync: DisconnectMutateAsync<context>;
   }
 >;
 
-export function injectReconnect<context = unknown>(
-  parametersFn: () => InjectReconnectParameters<context> = emptyObjFn
-): InjectReconnectReturnType<context> {
+export function injectDisconnect<context = unknown>(
+  parametersFn: () => InjectDisconnectParameters<context> = emptyObjFn
+): InjectDisconnectReturnType<context> {
   const config = injectConfig(parametersFn());
   const props = computed(() => {
     const { mutation } = parametersFn();
-    const mutationOptions = reconnectMutationOptions(config);
+    const mutationOptions = disconnectMutationOptions(config);
     return {
       ...mutation,
       ...mutationOptions,
@@ -62,7 +60,7 @@ export function injectReconnect<context = unknown>(
 
   return {
     ...result,
-    reconnect: mutate,
-    reconnectAsync: mutateAsync,
+    disconnect: mutate,
+    disconnectAsync: mutateAsync,
   };
 }

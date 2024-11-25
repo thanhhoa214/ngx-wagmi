@@ -29,8 +29,7 @@
     "ngxtension": "^4.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "viem": "^2.21.50",
-    "zone.js": "~0.14.3"
+    "viem": "^2.21.50"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.12",

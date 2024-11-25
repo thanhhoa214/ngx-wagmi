@@ -30,12 +30,8 @@ export function injectAccountEffect(
   const config = injectConfig(parameters);
 
   effect(() => {
-    console.log('effect runs');
-
     return watchAccount(config, {
       onChange(data, prevData) {
-        console.log('onChange runs');
-
         if (
           (prevData.status === 'reconnecting' ||
             (prevData.status === 'connecting' &&
