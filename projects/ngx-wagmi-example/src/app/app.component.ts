@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 
-import { account, injectConnect, injectConnectors } from 'ngx-wagmi';
+import {
+  injectAccount,
+  injectAccountEffect,
+  injectConnect,
+  injectConnectors,
+  injectReconnect,
+} from 'ngx-wagmi';
 
 import { injected } from '@wagmi/connectors';
 
@@ -19,9 +25,18 @@ import { injected } from '@wagmi/connectors';
   `,
 })
 export class AppComponent {
-  account = account();
+  account = injectAccount();
+  accountEffect = injectAccountEffect({
+    onConnect: () => console.log('connected'),
+    onDisconnect: () => console.log('disconnected'),
+  });
   connect = injectConnect();
   connectors = injectConnectors();
 
-  injectedConnector = injected();
+  reconnect = injectReconnect();
+  readonly injectedConnector = injected();
+
+  constructor() {
+    this.reconnect.reconnect();
+  }
 }

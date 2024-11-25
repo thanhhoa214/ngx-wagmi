@@ -9,12 +9,11 @@ export const injectAccount = (parameters: InjectConnectorsParameters = {}) => {
   const config = injectConfig(parameters);
   const account = signal(getAccount(config));
 
-  effect(() => {
-    const unwatch = watchAccount(config, {
+  effect(() =>
+    watchAccount(config, {
       onChange: (newAccount) => account.set(newAccount),
-    });
-    return () => unwatch();
-  });
+    })
+  );
 
   return account.asReadonly();
 };
