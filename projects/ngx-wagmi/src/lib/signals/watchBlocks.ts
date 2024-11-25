@@ -52,15 +52,18 @@ export function injectWatchBlocks<
   const config = injectConfig(parametersFn());
   const configChainId = injectChainId({ config });
 
-  effect(() => {
+  effect((onClean) => {
     const parameters = parametersFn();
     const { enabled = true, onBlock, config: _, ...rest } = parameters;
     const chainId = parameters.chainId ?? configChainId();
+
     if (!enabled || !onBlock) return;
-    return watchBlocks(config, {
-      ...(rest as any),
-      chainId,
-      onBlock,
-    });
+    return onClean(
+      watchBlocks(config, {
+        ...(rest as any),
+        chainId,
+        onBlock,
+      })
+    );
   });
 }

@@ -1,13 +1,13 @@
 import {
   Component,
   computed,
+  signal,
 } from '@angular/core';
 
 import {
   injectAccount,
   injectAccountEffect,
   injectBalance,
-  injectBlock,
   injectChainId,
   injectChains,
   injectConfig,
@@ -29,10 +29,9 @@ import { base } from '@wagmi/core/chains';
     <ul>
       <li>Account: {{ account().address }}</li>
       <li>Chain ID: {{ chainId() }}</li>
-      <li>Current block: {{ block.data()?.number }}</li>
+      <!-- <li>Current block: {{ block.data()?.number }}</li> -->
       <li>
-        Balance: {{ balance.data()?.symbol }}{{ balance.data()?.value }},
-        {{ balance.isLoading() }},
+        Balance: {{ balance.data()?.symbol }}{{ balance.data()?.value }}, {{ balance.isLoading() }},
         {{ balance.error() }}
       </li>
     </ul>
@@ -43,9 +42,7 @@ import { base } from '@wagmi/core/chains';
     <button (click)="item.connect()">Connect to {{ item.id }}</button>
     }
     <br />
-    <button (click)="connect.connect({ connector: injectedConnector })">
-      Connect
-    </button>
+    <button (click)="connect.connect({ connector: injectedConnector })">Connect</button>
     <button (click)="disconnectM.disconnect()">Disconnect</button>
 
     <br />
@@ -53,15 +50,15 @@ import { base } from '@wagmi/core/chains';
     <ul>
       @for (item of chains(); track item.id) {
       <li>
-        <button (click)="switchChainM.switchChain({ chainId: item.id })">
-          Switch to {{ item.name }}
-        </button>
+        <button (click)="switchChainM.switchChain({ chainId: item.id })">Switch to {{ item.name }}</button>
       </li>
       }
     </ul>
   `,
 })
 export class AppComponent {
+  enabled = signal(true);
+
   account = injectAccount();
   chainId = injectChainId();
   address = computed(() => this.account().address);
@@ -81,13 +78,11 @@ export class AppComponent {
   reconnect = injectReconnect();
 
   watchBlocks = injectWatchBlocks(() => ({
-    onBlock: (block) => console.log(block.number),
+    enabled: this.enabled(),
+    onBlock: block => console.log(block.number),
   }));
 
-  block = injectBlock(() => ({
-    chainId: this.chainId(),
-    watch: true,
-  }));
+  // block = injectBlock();
 
   readonly injectedConnector = injected();
 
@@ -100,5 +95,6 @@ export class AppComponent {
 
   switchChain() {
     this.switchChainM.switchChain({ chainId: base.id });
+    this.enabled.set(false);
   }
 }

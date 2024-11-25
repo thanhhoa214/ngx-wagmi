@@ -13,8 +13,14 @@ import {
   QueryClient,
   withDevtools,
 } from '@tanstack/angular-query-experimental';
-import { createConfig, http } from '@wagmi/core';
-import { base, mainnet } from '@wagmi/core/chains';
+import {
+  createConfig,
+  http,
+} from '@wagmi/core';
+import {
+  base,
+  mainnet,
+} from '@wagmi/core/chains';
 
 import { routes } from './app.routes';
 
@@ -24,6 +30,7 @@ const defaultConfig = createConfig({
     [mainnet.id]: http(),
     [base.id]: http(),
   },
+  ssr: true,
 });
 
 export const appConfig: ApplicationConfig = {

@@ -1,4 +1,8 @@
-import { effect, signal, Signal } from '@angular/core';
+import {
+  effect,
+  signal,
+  Signal,
+} from '@angular/core';
 
 import {
   type Config,
@@ -25,10 +29,12 @@ export function injectChainId<
   const config = injectConfig(parameters);
   const chainId = signal(getChainId(config));
 
-  effect(() =>
-    watchChainId(config, {
-      onChange: (newId) => chainId.set(newId),
-    })
+  effect((onClean) =>
+    onClean(
+      watchChainId(config, {
+        onChange: (newId) => chainId.set(newId),
+      })
+    )
   );
 
   return chainId.asReadonly();

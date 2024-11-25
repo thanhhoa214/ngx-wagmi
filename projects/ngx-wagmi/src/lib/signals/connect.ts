@@ -4,7 +4,11 @@ import {
   injectMutation,
   mutationOptions,
 } from '@tanstack/angular-query-experimental';
-import type { Config, ConnectErrorType, ResolvedRegister } from '@wagmi/core';
+import type {
+  Config,
+  ConnectErrorType,
+  ResolvedRegister,
+} from '@wagmi/core';
 import type { Compute } from '@wagmi/core/internal';
 import {
   type ConnectData,
@@ -68,15 +72,17 @@ export function injectConnect<
   );
 
   // Reset mutation back to an idle state when the connector disconnects.
-  effect(() => {
-    return config.subscribe(
-      ({ status }) => status,
-      (status, previousStatus) => {
-        if (previousStatus === 'connected' && status === 'disconnected')
-          result.reset();
-      }
-    );
-  });
+  effect((onClean) =>
+    onClean(
+      config.subscribe(
+        ({ status }) => status,
+        (status, previousStatus) => {
+          if (previousStatus === 'connected' && status === 'disconnected')
+            result.reset();
+        }
+      )
+    )
+  );
 
   return {
     ...result,
