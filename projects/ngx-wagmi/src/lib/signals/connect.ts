@@ -11,17 +11,14 @@ import {
   type ConnectVariables,
 } from '@wagmi/core/query';
 
-import { ConfigParameter } from '../types/properties';
 import type { InjectMutationParameters, InjectMutationReturnType } from '../utils/query';
 import { injectConfig } from './config';
 
-export type InjectConnectParameters<config extends Config = Config, context = unknown> = Compute<
-  ConfigParameter<config> & {
-    mutation?:
-      | InjectMutationParameters<ConnectData<config>, ConnectErrorType, ConnectVariables<config>, context>
-      | undefined;
-  }
->;
+export type InjectConnectParameters<config extends Config = Config, context = unknown> = Compute<{
+  mutation?:
+    | InjectMutationParameters<ConnectData<config>, ConnectErrorType, ConnectVariables<config>, context>
+    | undefined;
+}>;
 
 export type InjectConnectReturnType<config extends Config = Config, context = unknown> = Compute<
   InjectMutationReturnType<ConnectData<config>, ConnectErrorType, ConnectVariables<config>, context> & {
@@ -33,7 +30,7 @@ export function injectConnect<config extends Config = ResolvedRegister['config']
   parameters: InjectConnectParameters<config, context> = {},
 ): InjectConnectReturnType<config, context> {
   const { mutation } = parameters;
-  const config = injectConfig(parameters);
+  const config = injectConfig();
   const extendMutationOptions = mutationOptions({
     ...mutation,
     ...connectMutationOptions(config),

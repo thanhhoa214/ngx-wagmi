@@ -11,7 +11,7 @@ import {
   getBalanceQueryOptions,
 } from '@wagmi/core/query';
 
-import type { ConfigParameter, QueryParameter } from '../types/properties';
+import type { QueryParameter } from '../types/properties';
 import { InjectQueryReturnType } from '../utils/query';
 import { injectChainId } from './chainId';
 import { injectConfig } from './config';
@@ -20,7 +20,6 @@ const emptyObjFn = () => ({});
 
 export type InjectBalanceParameters<config extends Config = Config, selectData = GetBalanceData> = Compute<
   GetBalanceOptions<config> &
-    ConfigParameter<config> &
     QueryParameter<GetBalanceQueryFnData, GetBalanceErrorType, selectData, GetBalanceQueryKey<config>>
 >;
 
@@ -32,8 +31,8 @@ export type InjectBalanceReturnType<selectData = GetBalanceData> = InjectQueryRe
 export function injectBalance<config extends Config = ResolvedRegister['config'], selectData = GetBalanceData>(
   parametersFn: () => InjectBalanceParameters<config, selectData> = emptyObjFn,
 ) {
-  const config = injectConfig(parametersFn());
-  const chainId = injectChainId({ config });
+  const config = injectConfig();
+  const chainId = injectChainId();
   const props = computed(() => {
     const parameters = parametersFn();
     const { address, query = {} } = parameters;

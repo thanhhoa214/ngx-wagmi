@@ -31,7 +31,7 @@ export type InjectReconnectReturnType<context = unknown> = Compute<
 export function injectReconnect<context = unknown>(
   parametersFn: () => InjectReconnectParameters<context> = emptyObjFn,
 ): InjectReconnectReturnType<context> {
-  const config = injectConfig(parametersFn());
+  const config = injectConfig();
   const props = computed(() => {
     const { mutation } = parametersFn();
     const mutationOptions = reconnectMutationOptions(config);

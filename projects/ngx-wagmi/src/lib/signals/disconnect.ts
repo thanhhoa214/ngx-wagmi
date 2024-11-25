@@ -31,7 +31,7 @@ export type InjectDisconnectReturnType<context = unknown> = Compute<
 export function injectDisconnect<context = unknown>(
   parametersFn: () => InjectDisconnectParameters<context> = emptyObjFn,
 ): InjectDisconnectReturnType<context> {
-  const config = injectConfig(parametersFn());
+  const config = injectConfig();
   const props = computed(() => {
     const { mutation } = parametersFn();
     const mutationOptions = disconnectMutationOptions(config);

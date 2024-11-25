@@ -16,7 +16,7 @@ import {
 } from 'ngx-wagmi';
 
 import { injected } from '@wagmi/core';
-import { base } from '@wagmi/core/chains';
+import { Chain } from '@wagmi/core/chains';
 
 @Component({
   selector: 'app-root',
@@ -46,7 +46,7 @@ import { base } from '@wagmi/core/chains';
     <ul>
       @for (item of chains(); track item.id) {
         <li>
-          <button (click)="switchChainM.switchChain({ chainId: item.id })">Switch to {{ item.name }}</button>
+          <button (click)="switchChain(item.id)">Switch to {{ item.name }}</button>
         </li>
       }
     </ul>
@@ -74,7 +74,6 @@ export class AppComponent {
   reconnect = injectReconnect();
 
   watchBlocks = injectWatchBlocks(() => ({
-    enabled: this.enabled(),
     onBlock: (block) => console.log(block.number),
   }));
 
@@ -89,8 +88,8 @@ export class AppComponent {
     this.reconnect.reconnect();
   }
 
-  switchChain() {
-    this.switchChainM.switchChain({ chainId: base.id });
-    this.enabled.set(false);
+  switchChain(chainId: Chain['id']) {
+    this.switchChainM.switchChain({ chainId });
+    this.enabled.set(!this.enabled());
   }
 }

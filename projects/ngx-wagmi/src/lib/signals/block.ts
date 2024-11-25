@@ -13,7 +13,7 @@ import {
   getBlockQueryOptions,
 } from '@wagmi/core/query';
 
-import type { ConfigParameter, QueryParameter } from '../types/properties';
+import type { QueryParameter } from '../types/properties';
 import { emptyObjFn, type InjectQueryReturnType } from '../utils/query';
 import { injectChainId } from './chainId';
 import { injectConfig } from './config';
@@ -27,7 +27,6 @@ export type InjectBlockParameters<
   selectData = GetBlockData<includeTransactions, blockTag, config, chainId>,
 > = Compute<
   GetBlockOptions<includeTransactions, blockTag, config, chainId> &
-    ConfigParameter<config> &
     QueryParameter<
       GetBlockQueryFnData<includeTransactions, blockTag, config, chainId>,
       GetBlockErrorType,
@@ -39,7 +38,7 @@ export type InjectBlockParameters<
         | UnionCompute<
             UnionStrictOmit<
               InjectWatchBlocksParameters<includeTransactions, blockTag, config, chainId>,
-              'chainId' | 'config' | 'onBlock' | 'onError'
+              'chainId' | 'onBlock' | 'onError'
             >
           >
         | undefined;
@@ -54,7 +53,6 @@ export type InjectBlockReturnType<
   selectData = GetBlockData<includeTransactions, blockTag, config, chainId>,
 > = InjectQueryReturnType<selectData, GetBlockErrorType>;
 
-/** https://wagmi.sh/react/hooks/injectBlock */
 export function injectBlock<
   includeTransactions extends boolean = false,
   blockTag extends BlockTag = 'latest',
@@ -64,7 +62,7 @@ export function injectBlock<
 >(
   parametersFn: () => InjectBlockParameters<includeTransactions, blockTag, config, chainId, selectData> = emptyObjFn,
 ): InjectBlockReturnType<includeTransactions, blockTag, config, chainId, selectData> {
-  const config = injectConfig(parametersFn());
+  const config = injectConfig();
   const queryClient = injectQueryClient();
   const configChainId = injectChainId();
 
@@ -74,7 +72,7 @@ export function injectBlock<
     const chainId = parameters.chainId ?? configChainId();
 
     const options = getBlockQueryOptions(config, {
-      ...parametersFn(),
+      ...parameters,
       chainId,
     });
     const enabled = Boolean(query.enabled ?? true);
@@ -86,14 +84,13 @@ export function injectBlock<
   });
 
   injectWatchBlocks(() => {
-    const { watch, config, chainId: _chainId } = parametersFn();
+    const { watch, chainId: _chainId } = parametersFn();
     const chainId = _chainId ?? configChainId();
     const { enabled, queryKey } = props();
 
     return {
       ...({
-        config: config,
-        chainId: chainId,
+        chainId,
         ...(typeof watch === 'object' ? watch : {}),
       } as InjectWatchBlocksParameters),
       enabled: Boolean(enabled && (typeof watch === 'object' ? watch.enabled : watch)),

@@ -11,22 +11,19 @@ import {
   type SwitchChainVariables,
 } from '@wagmi/core/query';
 
-import type { ConfigParameter } from '../types/properties';
 import { emptyObjFn, type InjectMutationParameters, type InjectMutationReturnType } from '../utils/query';
 import { injectConfig } from './config';
 
-export type InjectSwitchChainParameters<config extends Config = Config, context = unknown> = Compute<
-  ConfigParameter<config> & {
-    mutation?:
-      | InjectMutationParameters<
-          SwitchChainData<config, config['chains'][number]['id']>,
-          SwitchChainErrorType,
-          SwitchChainVariables<config, config['chains'][number]['id']>,
-          context
-        >
-      | undefined;
-  }
->;
+export type InjectSwitchChainParameters<config extends Config = Config, context = unknown> = Compute<{
+  mutation?:
+    | InjectMutationParameters<
+        SwitchChainData<config, config['chains'][number]['id']>,
+        SwitchChainErrorType,
+        SwitchChainVariables<config, config['chains'][number]['id']>,
+        context
+      >
+    | undefined;
+}>;
 
 export type InjectSwitchChainReturnType<config extends Config = Config, context = unknown> = Compute<
   InjectMutationReturnType<
