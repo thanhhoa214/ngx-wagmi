@@ -9,6 +9,11 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
+    "paths": {
+      "ngx-wagmi": [
+        "./dist/ngx-wagmi"
+      ]
+    },
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
