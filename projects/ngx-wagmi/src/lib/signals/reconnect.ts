@@ -19,8 +19,6 @@ import {
 } from '../utils/query';
 import { injectConfig } from './config';
 
-('inject client');
-
 export type InjectReconnectParameters<context = unknown> = Compute<
   ConfigParameter & {
     mutation?:

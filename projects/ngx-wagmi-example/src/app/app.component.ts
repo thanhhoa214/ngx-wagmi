@@ -1,9 +1,13 @@
-import { Component, computed } from '@angular/core';
+import {
+  Component,
+  computed,
+} from '@angular/core';
 
 import {
   injectAccount,
   injectAccountEffect,
   injectBalance,
+  injectBlock,
   injectChainId,
   injectChains,
   injectConfig,
@@ -12,6 +16,7 @@ import {
   injectDisconnect,
   injectReconnect,
   injectSwitchChain,
+  injectWatchBlocks,
 } from 'ngx-wagmi';
 
 import { injected } from '@wagmi/core';
@@ -24,6 +29,7 @@ import { base } from '@wagmi/core/chains';
     <ul>
       <li>Account: {{ account().address }}</li>
       <li>Chain ID: {{ chainId() }}</li>
+      <li>Current block: {{ block.data()?.number }}</li>
       <li>
         Balance: {{ balance.data()?.symbol }}{{ balance.data()?.value }},
         {{ balance.isLoading() }},
@@ -73,6 +79,15 @@ export class AppComponent {
   connect = injectConnect();
   disconnectM = injectDisconnect();
   reconnect = injectReconnect();
+
+  watchBlocks = injectWatchBlocks(() => ({
+    onBlock: (block) => console.log(block.number),
+  }));
+
+  block = injectBlock(() => ({
+    chainId: this.chainId(),
+    watch: true,
+  }));
 
   readonly injectedConnector = injected();
 
