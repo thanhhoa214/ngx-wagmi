@@ -1,14 +1,6 @@
-import {
-  effect,
-  signal,
-} from '@angular/core';
+import { effect, signal } from '@angular/core';
 
-import {
-  type Config,
-  getChains,
-  type GetChainsReturnType,
-  type ResolvedRegister,
-} from '@wagmi/core';
+import { type Config, getChains, type GetChainsReturnType, type ResolvedRegister } from '@wagmi/core';
 import { watchChains } from '@wagmi/core/internal';
 
 import type { ConfigParameter } from '../types/properties';
@@ -18,16 +10,18 @@ export type InjectChainsParameters<config extends Config = Config> = ConfigParam
 
 export type InjectChainsReturnType<config extends Config = Config> = GetChainsReturnType<config>;
 
-export function injectChains<config extends Config = ResolvedRegister['config']>(parameters: InjectChainsParameters<config> = {}) {
+export function injectChains<config extends Config = ResolvedRegister['config']>(
+  parameters: InjectChainsParameters<config> = {},
+) {
   const config = injectConfig(parameters);
   const account = signal(getChains(config));
 
-  effect(onClean =>
+  effect((onClean) =>
     onClean(
       watchChains(config, {
-        onChange: newAccount => account.set(newAccount),
-      })
-    )
+        onChange: (newAccount) => account.set(newAccount),
+      }),
+    ),
   );
 
   return account.asReadonly();

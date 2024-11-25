@@ -5,7 +5,8 @@ This library was generated with [Angular CLI](https://github.com/angular/angular
 ## Code scaffolding
 
 Run `ng generate component component-name --project ngx-wagmi` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-wagmi`.
-> Note: Don't forget to add `--project ngx-wagmi` or else it will be added to the default project in your `angular.json` file. 
+
+> Note: Don't forget to add `--project ngx-wagmi` or else it will be added to the default project in your `angular.json` file.
 
 ## Build
 

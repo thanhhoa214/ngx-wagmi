@@ -9,9 +9,7 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "paths": {
-      "ngx-wagmi": [
-        "./dist/ngx-wagmi"
-      ]
+      "ngx-wagmi": ["./dist/ngx-wagmi"]
     },
     "esModuleInterop": true,
     "sourceMap": true,
@@ -22,10 +20,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "lib": ["ES2022", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

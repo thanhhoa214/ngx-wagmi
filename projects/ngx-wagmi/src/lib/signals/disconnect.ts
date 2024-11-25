@@ -12,40 +12,24 @@ import {
 } from '@wagmi/core/query';
 
 import type { ConfigParameter } from '../types/properties';
-import {
-  emptyObjFn,
-  type InjectMutationParameters,
-  type InjectMutationReturnType,
-} from '../utils/query';
+import { emptyObjFn, type InjectMutationParameters, type InjectMutationReturnType } from '../utils/query';
 import { injectConfig } from './config';
 
 export type InjectDisconnectParameters<context = unknown> = Compute<
   ConfigParameter & {
-    mutation?:
-      | InjectMutationParameters<
-          DisconnectData,
-          DisconnectErrorType,
-          DisconnectVariables,
-          context
-        >
-      | undefined;
+    mutation?: InjectMutationParameters<DisconnectData, DisconnectErrorType, DisconnectVariables, context> | undefined;
   }
 >;
 
 export type InjectDisconnectReturnType<context = unknown> = Compute<
-  InjectMutationReturnType<
-    DisconnectData,
-    DisconnectErrorType,
-    DisconnectVariables,
-    context
-  > & {
+  InjectMutationReturnType<DisconnectData, DisconnectErrorType, DisconnectVariables, context> & {
     disconnect: DisconnectMutate<context>;
     disconnectAsync: DisconnectMutateAsync<context>;
   }
 >;
 
 export function injectDisconnect<context = unknown>(
-  parametersFn: () => InjectDisconnectParameters<context> = emptyObjFn
+  parametersFn: () => InjectDisconnectParameters<context> = emptyObjFn,
 ): InjectDisconnectReturnType<context> {
   const config = injectConfig(parametersFn());
   const props = computed(() => {

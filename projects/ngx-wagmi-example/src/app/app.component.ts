@@ -1,8 +1,4 @@
-import {
-  Component,
-  computed,
-  signal,
-} from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 
 import {
   injectAccount,
@@ -39,7 +35,7 @@ import { base } from '@wagmi/core/chains';
     <br />
     <h3>Connection</h3>
     @for (item of connectors(); track item.id) {
-    <button (click)="item.connect()">Connect to {{ item.id }}</button>
+      <button (click)="item.connect()">Connect to {{ item.id }}</button>
     }
     <br />
     <button (click)="connect.connect({ connector: injectedConnector })">Connect</button>
@@ -49,9 +45,9 @@ import { base } from '@wagmi/core/chains';
     <h3>Switch Chain</h3>
     <ul>
       @for (item of chains(); track item.id) {
-      <li>
-        <button (click)="switchChainM.switchChain({ chainId: item.id })">Switch to {{ item.name }}</button>
-      </li>
+        <li>
+          <button (click)="switchChainM.switchChain({ chainId: item.id })">Switch to {{ item.name }}</button>
+        </li>
       }
     </ul>
   `,
@@ -79,7 +75,7 @@ export class AppComponent {
 
   watchBlocks = injectWatchBlocks(() => ({
     enabled: this.enabled(),
-    onBlock: block => console.log(block.number),
+    onBlock: (block) => console.log(block.number),
   }));
 
   // block = injectBlock();

@@ -22,7 +22,7 @@ export type QueryParameter<
   queryFnData = unknown,
   error = DefaultError,
   data = queryFnData,
-  queryKey extends QueryKey = QueryKey
+  queryKey extends QueryKey = QueryKey,
 > = {
   query?:
     | Omit<
@@ -38,17 +38,10 @@ export type InfiniteQueryParameter<
   data = queryFnData,
   queryData = queryFnData,
   queryKey extends QueryKey = QueryKey,
-  pageParam = unknown
+  pageParam = unknown,
 > = {
   query: Omit<
-    InjectInfiniteQueryParameters<
-      queryFnData,
-      error,
-      data,
-      queryData,
-      queryKey,
-      pageParam
-    >,
+    InjectInfiniteQueryParameters<queryFnData, error, data, queryData, queryKey, pageParam>,
     'queryFn' | 'queryHash' | 'queryKey' | 'queryKeyHashFn' | 'throwOnError'
   >;
 };

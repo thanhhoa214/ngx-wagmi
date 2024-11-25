@@ -2,21 +2,10 @@ import { effect } from '@angular/core';
 
 import type { BlockTag } from 'viem';
 
-import {
-  type Config,
-  type ResolvedRegister,
-  watchBlocks,
-  type WatchBlocksParameters,
-} from '@wagmi/core';
-import type {
-  UnionCompute,
-  UnionExactPartial,
-} from '@wagmi/core/internal';
+import { type Config, type ResolvedRegister, watchBlocks, type WatchBlocksParameters } from '@wagmi/core';
+import type { UnionCompute, UnionExactPartial } from '@wagmi/core/internal';
 
-import type {
-  ConfigParameter,
-  EnabledParameter,
-} from '../types/properties';
+import type { ConfigParameter, EnabledParameter } from '../types/properties';
 import { emptyObjFn } from '../utils/query';
 import { injectChainId } from './chainId';
 import { injectConfig } from './config';
@@ -25,11 +14,9 @@ export type InjectWatchBlocksParameters<
   includeTransactions extends boolean = false,
   blockTag extends BlockTag = 'latest',
   config extends Config = Config,
-  chainId extends config['chains'][number]['id'] = config['chains'][number]['id']
+  chainId extends config['chains'][number]['id'] = config['chains'][number]['id'],
 > = UnionCompute<
-  UnionExactPartial<
-    WatchBlocksParameters<includeTransactions, blockTag, config, chainId>
-  > &
+  UnionExactPartial<WatchBlocksParameters<includeTransactions, blockTag, config, chainId>> &
     ConfigParameter<config> &
     EnabledParameter
 >;
@@ -40,14 +27,9 @@ export function injectWatchBlocks<
   config extends Config = ResolvedRegister['config'],
   chainId extends config['chains'][number]['id'] = config['chains'][number]['id'],
   includeTransactions extends boolean = false,
-  blockTag extends BlockTag = 'latest'
+  blockTag extends BlockTag = 'latest',
 >(
-  parametersFn: () => InjectWatchBlocksParameters<
-    includeTransactions,
-    blockTag,
-    config,
-    chainId
-  > = emptyObjFn as any
+  parametersFn: () => InjectWatchBlocksParameters<includeTransactions, blockTag, config, chainId> = emptyObjFn as any,
 ): InjectWatchBlocksReturnType {
   const config = injectConfig(parametersFn());
   const configChainId = injectChainId({ config });
@@ -63,7 +45,7 @@ export function injectWatchBlocks<
         ...(rest as any),
         chainId,
         onBlock,
-      })
+      }),
     );
   });
 }

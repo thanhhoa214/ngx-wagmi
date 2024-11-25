@@ -12,40 +12,24 @@ import {
 } from '@wagmi/core/query';
 
 import type { ConfigParameter } from '../types/properties';
-import {
-  emptyObjFn,
-  type InjectMutationParameters,
-  type InjectMutationReturnType,
-} from '../utils/query';
+import { emptyObjFn, type InjectMutationParameters, type InjectMutationReturnType } from '../utils/query';
 import { injectConfig } from './config';
 
 export type InjectReconnectParameters<context = unknown> = Compute<
   ConfigParameter & {
-    mutation?:
-      | InjectMutationParameters<
-          ReconnectData,
-          ReconnectErrorType,
-          ReconnectVariables,
-          context
-        >
-      | undefined;
+    mutation?: InjectMutationParameters<ReconnectData, ReconnectErrorType, ReconnectVariables, context> | undefined;
   }
 >;
 
 export type InjectReconnectReturnType<context = unknown> = Compute<
-  InjectMutationReturnType<
-    ReconnectData,
-    ReconnectErrorType,
-    ReconnectVariables,
-    context
-  > & {
+  InjectMutationReturnType<ReconnectData, ReconnectErrorType, ReconnectVariables, context> & {
     reconnect: ReconnectMutate<context>;
     reconnectAsync: ReconnectMutateAsync<context>;
   }
 >;
 
 export function injectReconnect<context = unknown>(
-  parametersFn: () => InjectReconnectParameters<context> = emptyObjFn
+  parametersFn: () => InjectReconnectParameters<context> = emptyObjFn,
 ): InjectReconnectReturnType<context> {
   const config = injectConfig(parametersFn());
   const props = computed(() => {
