@@ -35,6 +35,7 @@ import {
   injectReconnect,
   injectSendTransaction,
   injectSignMessage,
+  injectSignTypedData,
   injectSwitchChain,
   injectWatchAsset,
   injectWatchBlockNumber,
@@ -98,6 +99,11 @@ import { CardComponent } from './ui/card.component';
       <p class="error">
         <button (click)="signMessage()">Sign message</button>
         {{ signMessageM.error()?.message }}
+      </p>
+
+      <p class="error">
+        <button (click)="signTypedData()">Sign typed data</button>
+        {{ signTypedDataM.error()?.message }}
       </p>
 
       <app-card title="Current block" [query]="block" />
@@ -230,6 +236,7 @@ export class AppComponent {
 
   sendTxM = injectSendTransaction();
   signMessageM = injectSignMessage();
+  signTypedDataM = injectSignTypedData();
 
   constructor() {
     this.reconnect.reconnect();
@@ -254,5 +261,47 @@ export class AppComponent {
     this.signMessageM.signMessage({
       message: 'This is a test message. You usually want to integrate for your signing in flow.',
     });
+  }
+
+  signTypedData() {
+    this.signTypedDataM
+      .signTypedDataAsync({
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+          ],
+          Person: [
+            { name: 'name', type: 'string' },
+            { name: 'wallet', type: 'address' },
+          ],
+          Mail: [
+            { name: 'from', type: 'Person' },
+            { name: 'to', type: 'Person' },
+            { name: 'contents', type: 'string' },
+          ],
+        },
+        primaryType: 'Mail',
+        domain: {
+          name: 'Ether Mail',
+          version: '1',
+          chainId: BigInt(1),
+          verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+        },
+        message: {
+          from: {
+            name: 'Cow',
+            wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
+          },
+          to: {
+            name: 'Bob',
+            wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
+          },
+          contents: 'Hello, Bob!',
+        },
+      })
+      .then(console.log);
   }
 }
