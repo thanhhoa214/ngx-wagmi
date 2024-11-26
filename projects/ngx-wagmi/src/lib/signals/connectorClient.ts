@@ -61,7 +61,7 @@ export function injectConnectorClient<
 
   const props = computed(() => {
     const parameters = parametersFn();
-    const { query = {}, ...rest } = parameters;
+    const { query = {} } = parameters;
 
     const { connector, status } = account();
     const chainId = parameters.chainId ?? configChainId();

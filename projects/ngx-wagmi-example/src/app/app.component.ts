@@ -22,6 +22,9 @@ import {
   injectEnsName,
   injectEnsResolver,
   injectEnsText,
+  injectEstimateFeesPerGas,
+  injectEstimateGas,
+  injectEstimateMaxPriorityFeePerGas,
   injectReconnect,
   injectSwitchChain,
   injectWatchAsset,
@@ -55,6 +58,9 @@ import { CardComponent } from './ui/card.component';
       <app-card title="ensAvatar of vitalik" [query]="ensAvatar" />
       <app-card title="ensResolver of vitalik" [query]="ensResolver" />
       <app-card title="ensText of vitalik" [query]="ensText" />
+      <app-card title="feesPerGas" [query]="feesPerGas" />
+      <app-card title="gas" [query]="gas" />
+      <app-card title="maxPriorityFeePerGas" [query]="maxPriorityFeePerGas" />
     </div>
 
     <h3>Connections</h3>
@@ -149,6 +155,10 @@ export class AppComponent {
     name: this.ensName.data()!,
     query: { enabled: !!this.ensName.data() },
   }));
+
+  feesPerGas = injectEstimateFeesPerGas();
+  gas = injectEstimateGas();
+  maxPriorityFeePerGas = injectEstimateMaxPriorityFeePerGas();
 
   constructor() {
     this.reconnect.reconnect();
