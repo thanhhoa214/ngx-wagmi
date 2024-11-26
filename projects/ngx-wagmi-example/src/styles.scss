@@ -4,3 +4,7 @@
 .error {
   color: red;
 }
+
+.space-x-2 > * + * {
+  margin-left: 0.5rem;
+}

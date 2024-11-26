@@ -34,6 +34,7 @@ import {
   injectReadContracts,
   injectReconnect,
   injectSendTransaction,
+  injectSignMessage,
   injectSwitchChain,
   injectWatchAsset,
   injectWatchBlockNumber,
@@ -47,7 +48,7 @@ import { CardComponent } from './ui/card.component';
   standalone: true,
   template: `
     <div>
-      <p>
+      <div class="space-x-2">
         Chain ID: {{ chainId() }}.
 
         @if (account().isConnected) {
@@ -56,39 +57,48 @@ import { CardComponent } from './ui/card.component';
         } @else {
           <button (click)="connect.connect({ connector: injectedConnector })">Connect</button>
         }
+      </div>
+
+      <div class="space-x-2">
+        <strong>Connections</strong>
+        @for (item of connectors(); track item.id) {
+          <button (click)="item.connect()">Connect to {{ item.id }}</button>
+        }
+      </div>
+
+      <div class="space-x-2">
+        <strong>Switch Chain</strong>
+        @for (item of chains(); track item.id) {
+          <button (click)="switchChain(item.id)">Switch to {{ item.name }}</button>
+        }
+      </div>
+
+      <p class="error">
+        <button
+          (click)="
+            watchAssetM.watchAssetAsync({
+              type: 'ERC20',
+              options: {
+                address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+                symbol: 'USDT',
+                decimals: 6,
+              },
+            })
+          ">
+          Add USDT to wallet for watching (watchAsset)
+        </button>
+        {{ watchAssetM.error()?.message }}
       </p>
 
-      <h3>Connections</h3>
-      @for (item of connectors(); track item.id) {
-        <button (click)="item.connect()">Connect to {{ item.id }}</button>
-      }
-      <br />
-      <h3>Switch Chain</h3>
-      <ul>
-        @for (item of chains(); track item.id) {
-          <li>
-            <button (click)="switchChain(item.id)">Switch to {{ item.name }}</button>
-          </li>
-        }
-      </ul>
+      <p class="error">
+        <button (click)="sendTx()">Send transaction</button>
+        {{ sendTxM.error()?.message }}
+      </p>
 
-      <button
-        (click)="
-          watchAssetM.watchAssetAsync({
-            type: 'ERC20',
-            options: {
-              address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-              symbol: 'USDT',
-              decimals: 6,
-            },
-          })
-        ">
-        Add USDT to wallet for watching (watchAsset)
-      </button>
-      <p class="error">{{ watchAssetM.error()?.message }}</p>
-
-      <button (click)="sendTx()">Send transaction</button>
-      <p class="error">{{ sendTxM.error()?.message }}</p>
+      <p class="error">
+        <button (click)="signMessage()">Sign message</button>
+        {{ signMessageM.error()?.message }}
+      </p>
 
       <app-card title="Current block" [query]="block" />
       <app-card title="Current block tx count" [query]="blockTxCount" />
@@ -219,6 +229,7 @@ export class AppComponent {
   }));
 
   sendTxM = injectSendTransaction();
+  signMessageM = injectSignMessage();
 
   constructor() {
     this.reconnect.reconnect();
@@ -236,6 +247,12 @@ export class AppComponent {
     this.sendTxM.sendTransaction({
       to: '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
       value: parseEther('0.001'),
+    });
+  }
+
+  signMessage() {
+    this.signMessageM.signMessage({
+      message: 'This is a test message. You usually want to integrate for your signing in flow.',
     });
   }
 }
