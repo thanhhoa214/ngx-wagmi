@@ -28,6 +28,8 @@ export * from "./gasPrice";
 export * from "./prepareTransactionRequest";
 export * from "./proof";
 export * from "./publicClient";
+export * from "./readContract";
+export * from "./readContracts";
 export * from "./reconnect";
 export * from "./switchChain";
 export * from "./watchAsset";

@@ -30,13 +30,15 @@ import {
   injectPrepareTransactionRequest,
   injectProof,
   injectPublicClient,
+  injectReadContract,
+  injectReadContracts,
   injectReconnect,
   injectSwitchChain,
   injectWatchAsset,
   injectWatchBlockNumber,
   injectWatchBlocks,
 } from 'ngx-wagmi';
-import { parseEther } from 'viem';
+import { Address, erc20Abi, parseEther } from 'viem';
 import { CardComponent } from './ui/card.component';
 
 @Component({
@@ -102,6 +104,10 @@ import { CardComponent } from './ui/card.component';
       <app-card title="gasPrice" [query]="gasPrice" />
       <app-card title="proof" [query]="proof" />
       <app-card title="preparedTxRequest" [query]="preparedTxRequest" />
+      <app-card title="usdtName" [query]="usdtName" />
+      <app-card title="usdtInfo" [query]="usdtInfo">
+        <button (click)="usdtEthAddress.set('0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9')">Fetch AAVE info</button>
+      </app-card>
     </div>
   `,
   imports: [CardComponent],
@@ -109,6 +115,7 @@ import { CardComponent } from './ui/card.component';
 export class AppComponent {
   private enabled = signal(true);
   private vitalik = signal({ address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045' } as const);
+  usdtEthAddress = signal<Address>('0xdac17f958d2ee523a2206206994597c13d831ec7');
 
   account = injectAccount();
   chainId = injectChainId();
@@ -181,6 +188,31 @@ export class AppComponent {
   preparedTxRequest = injectPrepareTransactionRequest(() => ({
     to: '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
     value: parseEther('1'),
+  }));
+
+  usdtName = injectReadContract(() => ({
+    abi: erc20Abi,
+    address: this.usdtEthAddress(),
+    functionName: 'name',
+  }));
+  usdtInfo = injectReadContracts(() => ({
+    contracts: [
+      {
+        abi: erc20Abi,
+        address: this.usdtEthAddress(),
+        functionName: 'name',
+      },
+      {
+        abi: erc20Abi,
+        address: this.usdtEthAddress(),
+        functionName: 'symbol',
+      },
+      {
+        abi: erc20Abi,
+        address: this.usdtEthAddress(),
+        functionName: 'decimals',
+      },
+    ],
   }));
 
   constructor() {

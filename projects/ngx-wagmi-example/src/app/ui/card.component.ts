@@ -23,6 +23,9 @@ import { JsonBigIntPipe } from './jsonBigInt.pipe';
       @if (query().error()?.message) {
         <p>Error: {{ query().error()?.message }}</p>
       }
+      <footer>
+        <ng-content />
+      </footer>
     </section>
   `,
   styles: [
