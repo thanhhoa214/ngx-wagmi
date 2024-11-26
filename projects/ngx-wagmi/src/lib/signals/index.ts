@@ -11,5 +11,6 @@ export * from "./connectors";
 export * from "./disconnect";
 export * from "./reconnect";
 export * from "./switchChain";
+export * from "./watchAsset";
 export * from "./watchBlockNumber";
 export * from "./watchBlocks";

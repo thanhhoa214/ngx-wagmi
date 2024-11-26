@@ -13,6 +13,7 @@ import {
   injectDisconnect,
   injectReconnect,
   injectSwitchChain,
+  injectWatchAsset,
   injectWatchBlockNumber,
   injectWatchBlocks,
 } from 'ngx-wagmi';
@@ -52,6 +53,22 @@ import { Chain } from '@wagmi/core/chains';
         </li>
       }
     </ul>
+
+    <h3>Add USDT to wallet for watching (watchAsset)</h3>
+    <button
+      (click)="
+        watchAssetM.watchAssetAsync({
+          type: 'ERC20',
+          options: {
+            address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+            symbol: 'USDT',
+            decimals: 6,
+          },
+        })
+      ">
+      Watch USDT
+    </button>
+    <p>{{ watchAssetM.error()?.message }}</p>
   `,
 })
 export class AppComponent {
@@ -88,6 +105,8 @@ export class AppComponent {
 
   chains = injectChains();
   switchChainM = injectSwitchChain();
+
+  watchAssetM = injectWatchAsset();
 
   constructor() {
     this.reconnect.reconnect();
