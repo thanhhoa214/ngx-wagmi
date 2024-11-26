@@ -4,10 +4,10 @@ import { injectMutation } from '@tanstack/angular-query-experimental';
 import type { ReconnectErrorType } from '@wagmi/core';
 import type { Compute } from '@wagmi/core/internal';
 import {
+  reconnectMutationOptions,
   type ReconnectData,
   type ReconnectMutate,
   type ReconnectMutateAsync,
-  reconnectMutationOptions,
   type ReconnectVariables,
 } from '@wagmi/core/query';
 

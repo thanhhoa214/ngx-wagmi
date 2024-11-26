@@ -5,6 +5,7 @@ import {
   injectAccountEffect,
   injectBalance,
   injectBlock,
+  injectBlockTransactionCount,
   injectChainId,
   injectChains,
   injectConfig,
@@ -28,8 +29,7 @@ import { Chain } from '@wagmi/core/chains';
     <ul>
       <li>Account: {{ account().address }}</li>
       <li>Chain ID: {{ chainId() }}</li>
-      <li>Current block: {{ block.data()?.number }}</li>
-      <!-- <li>Current block no: {{ blockNumber.data() }}</li> -->
+      <li>Current block: {{ block.data()?.number }} includes {{ blockTxCount.data() }} txs</li>
       <li>
         Balance: {{ balance.data()?.symbol }}{{ balance.data()?.value }}, {{ balance.isLoading() }},
         {{ balance.error() }}
@@ -107,6 +107,9 @@ export class AppComponent {
   switchChainM = injectSwitchChain();
 
   watchAssetM = injectWatchAsset();
+  blockTxCount = injectBlockTransactionCount(() => ({
+    blockNumber: this.block.data()?.number,
+  }));
 
   constructor() {
     this.reconnect.reconnect();

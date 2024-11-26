@@ -4,10 +4,10 @@ import { injectMutation } from '@tanstack/angular-query-experimental';
 import type { DisconnectErrorType } from '@wagmi/core';
 import type { Compute } from '@wagmi/core/internal';
 import {
+  disconnectMutationOptions,
   type DisconnectData,
   type DisconnectMutate,
   type DisconnectMutateAsync,
-  disconnectMutationOptions,
   type DisconnectVariables,
 } from '@wagmi/core/query';
 

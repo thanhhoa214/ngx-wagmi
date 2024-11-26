@@ -4,14 +4,14 @@ import { injectMutation, mutationOptions } from '@tanstack/angular-query-experim
 import type { Config, ConnectErrorType, ResolvedRegister } from '@wagmi/core';
 import type { Compute } from '@wagmi/core/internal';
 import {
+  connectMutationOptions,
   type ConnectData,
   type ConnectMutate,
   type ConnectMutateAsync,
-  connectMutationOptions,
   type ConnectVariables,
 } from '@wagmi/core/query';
 
-import type { InjectMutationParameters, InjectMutationReturnType } from '../utils/query';
+import { type InjectMutationParameters, type InjectMutationReturnType } from '../utils/query';
 import { injectConfig } from './config';
 
 export type InjectConnectParameters<config extends Config = Config, context = unknown> = Compute<{

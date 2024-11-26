@@ -12,7 +12,7 @@ import {
 } from '@wagmi/core/query';
 
 import type { QueryParameter } from '../types/properties';
-import { InjectQueryReturnType } from '../utils/query';
+import { InjectQueryReturnType, queryOptionsSupportBigInt } from '../utils/query';
 import { injectChainId } from './chainId';
 import { injectConfig } from './config';
 
@@ -42,7 +42,12 @@ export function injectBalance<config extends Config = ResolvedRegister['config']
     });
     const enabled = Boolean(address && (query.enabled ?? true));
 
-    return { ...query, ...options, enabled };
+    return {
+      ...queryOptionsSupportBigInt,
+      ...query,
+      ...options,
+      enabled,
+    };
   });
 
   return injectQuery(props);

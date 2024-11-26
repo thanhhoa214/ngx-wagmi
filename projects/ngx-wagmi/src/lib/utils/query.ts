@@ -1,7 +1,6 @@
 import {
   injectMutation,
   injectInfiniteQuery as tanstack_injectInfiniteQuery,
-  injectQuery as tanstack_injectQuery,
   type CreateInfiniteQueryOptions,
   type CreateInfiniteQueryResult,
   type CreateMutationOptions,
@@ -15,6 +14,9 @@ import type { Compute, ExactPartial, Omit, UnionStrictOmit } from '@wagmi/core/i
 import { hashFn } from '@wagmi/core/query';
 
 export const emptyObjFn = () => ({});
+export const queryOptionsSupportBigInt = {
+  queryKeyHashFn: hashFn, // for bigint support
+} as const;
 
 export type InjectMutationParameters<data = unknown, error = Error, variables = void, context = unknown> = Compute<
   Omit<CreateMutationOptions<data, error, Compute<variables>, context>, 'mutationFn' | 'mutationKey' | 'throwOnError'>
@@ -45,22 +47,6 @@ export type InjectQueryReturnType<data = unknown, error = DefaultError> = Comput
     queryKey: QueryKey;
   }
 >;
-
-// Adding some basic customization.
-// Ideally we don't have this function, but `import('@tanstack/react-query').injectQuery` currently has some quirks where it is super hard to
-// pass down the inferred `initialData` type because of it's discriminated overload in the on `injectQuery`.
-export function injectQuery<queryFnData, error, data, queryKey extends QueryKey>(
-  parameters: InjectQueryParameters<queryFnData, error, data, queryKey> & {
-    queryKey: QueryKey;
-  },
-) {
-  const result = tanstack_injectQuery(() => ({
-    ...(parameters as any),
-    queryKeyHashFn: hashFn, // for bigint support
-  }));
-  // result.queryKey = parameters.queryKey;
-  return result;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 

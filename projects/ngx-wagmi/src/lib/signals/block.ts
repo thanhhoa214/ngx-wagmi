@@ -6,15 +6,15 @@ import { injectQuery, injectQueryClient } from '@tanstack/angular-query-experime
 import type { Config, GetBlockErrorType, ResolvedRegister } from '@wagmi/core';
 import type { Compute, UnionCompute, UnionStrictOmit } from '@wagmi/core/internal';
 import {
+  getBlockQueryOptions,
   type GetBlockData,
   type GetBlockOptions,
   type GetBlockQueryFnData,
   type GetBlockQueryKey,
-  getBlockQueryOptions,
 } from '@wagmi/core/query';
 
 import type { QueryParameter } from '../types/properties';
-import { emptyObjFn, type InjectQueryReturnType } from '../utils/query';
+import { emptyObjFn, queryOptionsSupportBigInt, type InjectQueryReturnType } from '../utils/query';
 import { injectChainId } from './chainId';
 import { injectConfig } from './config';
 import { injectWatchBlocks, type InjectWatchBlocksParameters } from './watchBlocks';
@@ -77,6 +77,7 @@ export function injectBlock<
     });
     const enabled = Boolean(query.enabled ?? true);
     return {
+      ...queryOptionsSupportBigInt,
       ...query,
       ...options,
       enabled,
