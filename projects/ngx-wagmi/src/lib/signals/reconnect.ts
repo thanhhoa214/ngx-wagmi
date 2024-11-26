@@ -35,10 +35,7 @@ export function injectReconnect<context = unknown>(
   const props = computed(() => {
     const { mutation } = parametersFn();
     const mutationOptions = reconnectMutationOptions(config);
-    return {
-      ...mutation,
-      ...mutationOptions,
-    };
+    return { ...mutation, ...mutationOptions };
   });
   const { mutate, mutateAsync, ...result } = injectMutation(props);
 

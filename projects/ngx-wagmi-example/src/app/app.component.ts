@@ -33,6 +33,7 @@ import {
   injectReadContract,
   injectReadContracts,
   injectReconnect,
+  injectSendTransaction,
   injectSwitchChain,
   injectWatchAsset,
   injectWatchBlockNumber,
@@ -71,7 +72,6 @@ import { CardComponent } from './ui/card.component';
         }
       </ul>
 
-      <h3>Add USDT to wallet for watching (watchAsset)</h3>
       <button
         (click)="
           watchAssetM.watchAssetAsync({
@@ -83,9 +83,12 @@ import { CardComponent } from './ui/card.component';
             },
           })
         ">
-        Watch USDT
+        Add USDT to wallet for watching (watchAsset)
       </button>
-      <p>{{ watchAssetM.error()?.message }}</p>
+      <p class="error">{{ watchAssetM.error()?.message }}</p>
+
+      <button (click)="sendTx()">Send transaction</button>
+      <p class="error">{{ sendTxM.error()?.message }}</p>
 
       <app-card title="Current block" [query]="block" />
       <app-card title="Current block tx count" [query]="blockTxCount" />
@@ -215,6 +218,8 @@ export class AppComponent {
     ],
   }));
 
+  sendTxM = injectSendTransaction();
+
   constructor() {
     this.reconnect.reconnect();
 
@@ -225,5 +230,12 @@ export class AppComponent {
   switchChain(chainId: Chain['id']) {
     this.switchChainM.switchChain({ chainId });
     this.enabled.set(!this.enabled());
+  }
+
+  sendTx() {
+    this.sendTxM.sendTransaction({
+      to: '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
+      value: parseEther('0.001'),
+    });
   }
 }
