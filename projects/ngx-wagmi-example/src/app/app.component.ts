@@ -1,5 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 
+import { injected } from '@wagmi/core';
+import { Chain } from '@wagmi/core/chains';
 import {
   injectAccount,
   injectAccountEffect,
@@ -15,15 +17,17 @@ import {
   injectConnectorClient,
   injectConnectors,
   injectDisconnect,
+  injectEnsAddress,
+  injectEnsAvatar,
+  injectEnsName,
+  injectEnsResolver,
+  injectEnsText,
   injectReconnect,
   injectSwitchChain,
   injectWatchAsset,
   injectWatchBlockNumber,
   injectWatchBlocks,
 } from 'ngx-wagmi';
-
-import { injected } from '@wagmi/core';
-import { Chain } from '@wagmi/core/chains';
 import { CardComponent } from './ui/card.component';
 
 @Component({
@@ -46,6 +50,11 @@ import { CardComponent } from './ui/card.component';
       <app-card title="Balance" [query]="balance" />
       <app-card title="Bytecode" [query]="bytecodeQ" />
       <app-card title="Connector Client" [query]="connectorClientQ" />
+      <app-card title="ensAddress of vitalik" [query]="ensAddress" />
+      <app-card title="ensName of vitalik" [query]="ensName" />
+      <app-card title="ensAvatar of vitalik" [query]="ensAvatar" />
+      <app-card title="ensResolver of vitalik" [query]="ensResolver" />
+      <app-card title="ensText of vitalik" [query]="ensText" />
     </div>
 
     <h3>Connections</h3>
@@ -82,6 +91,7 @@ import { CardComponent } from './ui/card.component';
 })
 export class AppComponent {
   private enabled = signal(true);
+  private vitalik = signal({ address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045' } as const);
 
   account = injectAccount();
   chainId = injectChainId();
@@ -123,6 +133,22 @@ export class AppComponent {
   bytecodeQ = injectBytecode(() => ({ address: this.address() }));
   client = injectClient();
   connectorClientQ = injectConnectorClient();
+
+  ensAddress = injectEnsAddress(() => ({ name: 'vitalik.eth' }));
+  ensName = injectEnsName(() => ({ address: this.vitalik().address }));
+  ensAvatar = injectEnsAvatar(() => ({
+    name: this.ensName.data()!,
+    query: { enabled: !!this.ensName.data() },
+  }));
+  ensText = injectEnsText(() => ({
+    name: this.ensName.data()!,
+    key: 'com.twitter',
+    query: { enabled: !!this.ensName.data() },
+  }));
+  ensResolver = injectEnsResolver(() => ({
+    name: this.ensName.data()!,
+    query: { enabled: !!this.ensName.data() },
+  }));
 
   constructor() {
     this.reconnect.reconnect();
