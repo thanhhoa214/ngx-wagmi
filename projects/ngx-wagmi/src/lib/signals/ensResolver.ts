@@ -26,7 +26,6 @@ export type InjectEnsResolverReturnType<selectData = GetEnsResolverData> = Injec
   GetEnsResolverErrorType
 >;
 
-/** https://wagmi.sh/react/api/hooks/injectEnsResolver */
 export function injectEnsResolver<config extends Config = ResolvedRegister['config'], selectData = GetEnsResolverData>(
   parametersFn: () => InjectEnsResolverParameters<config, selectData> = emptyObjFn,
 ): InjectEnsResolverReturnType<selectData> {

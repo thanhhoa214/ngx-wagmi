@@ -25,6 +25,7 @@ import {
   injectEstimateFeesPerGas,
   injectEstimateGas,
   injectEstimateMaxPriorityFeePerGas,
+  injectFeeHistory,
   injectReconnect,
   injectSwitchChain,
   injectWatchAsset,
@@ -48,6 +49,37 @@ import { CardComponent } from './ui/card.component';
           <button (click)="connect.connect({ connector: injectedConnector })">Connect</button>
         }
       </p>
+
+      <h3>Connections</h3>
+      @for (item of connectors(); track item.id) {
+        <button (click)="item.connect()">Connect to {{ item.id }}</button>
+      }
+      <br />
+      <h3>Switch Chain</h3>
+      <ul>
+        @for (item of chains(); track item.id) {
+          <li>
+            <button (click)="switchChain(item.id)">Switch to {{ item.name }}</button>
+          </li>
+        }
+      </ul>
+
+      <h3>Add USDT to wallet for watching (watchAsset)</h3>
+      <button
+        (click)="
+          watchAssetM.watchAssetAsync({
+            type: 'ERC20',
+            options: {
+              address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+              symbol: 'USDT',
+              decimals: 6,
+            },
+          })
+        ">
+        Watch USDT
+      </button>
+      <p>{{ watchAssetM.error()?.message }}</p>
+
       <app-card title="Current block" [query]="block" />
       <app-card title="Current block tx count" [query]="blockTxCount" />
       <app-card title="Balance" [query]="balance" />
@@ -61,37 +93,8 @@ import { CardComponent } from './ui/card.component';
       <app-card title="feesPerGas" [query]="feesPerGas" />
       <app-card title="gas" [query]="gas" />
       <app-card title="maxPriorityFeePerGas" [query]="maxPriorityFeePerGas" />
+      <app-card title="feeHistory" [query]="feeHistory" />
     </div>
-
-    <h3>Connections</h3>
-    @for (item of connectors(); track item.id) {
-      <button (click)="item.connect()">Connect to {{ item.id }}</button>
-    }
-    <br />
-    <h3>Switch Chain</h3>
-    <ul>
-      @for (item of chains(); track item.id) {
-        <li>
-          <button (click)="switchChain(item.id)">Switch to {{ item.name }}</button>
-        </li>
-      }
-    </ul>
-
-    <h3>Add USDT to wallet for watching (watchAsset)</h3>
-    <button
-      (click)="
-        watchAssetM.watchAssetAsync({
-          type: 'ERC20',
-          options: {
-            address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-            symbol: 'USDT',
-            decimals: 6,
-          },
-        })
-      ">
-      Watch USDT
-    </button>
-    <p>{{ watchAssetM.error()?.message }}</p>
   `,
   imports: [CardComponent],
 })
@@ -159,6 +162,7 @@ export class AppComponent {
   feesPerGas = injectEstimateFeesPerGas();
   gas = injectEstimateGas();
   maxPriorityFeePerGas = injectEstimateMaxPriorityFeePerGas();
+  feeHistory = injectFeeHistory(() => ({ blockCount: 4, rewardPercentiles: [25, 75] }));
 
   constructor() {
     this.reconnect.reconnect();

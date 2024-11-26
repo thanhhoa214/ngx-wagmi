@@ -35,7 +35,6 @@ export type InjectEstimateFeesPerGasReturnType<
   selectData = EstimateFeesPerGasData<type>,
 > = InjectQueryReturnType<selectData, EstimateFeesPerGasErrorType>;
 
-/** https://wagmi.sh/react/api/hooks/useEstimateFeesPerGas */
 export function injectEstimateFeesPerGas<
   config extends Config = ResolvedRegister['config'],
   type extends FeeValuesType = 'eip1559',

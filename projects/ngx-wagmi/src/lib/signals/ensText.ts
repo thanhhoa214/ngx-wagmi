@@ -26,7 +26,6 @@ export type InjectEnsTextReturnType<selectData = GetEnsTextData> = InjectQueryRe
   GetEnsTextErrorType
 >;
 
-/** https://wagmi.sh/react/api/hooks/useEnsText */
 export function injectEnsText<config extends Config = ResolvedRegister['config'], selectData = GetEnsTextData>(
   parametersFn: () => InjectEnsTextParameters<config, selectData> = emptyObjFn,
 ): InjectEnsTextReturnType<selectData> {

@@ -23,6 +23,7 @@ export * from "./ensText";
 export * from "./estimateFeePerGas";
 export * from "./estimateGas";
 export * from "./estimateMaxPriorityFeePerGas";
+export * from "./feeHistory";
 export * from "./reconnect";
 export * from "./switchChain";
 export * from "./watchAsset";
