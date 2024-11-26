@@ -12,6 +12,7 @@ import {
   injectClient,
   injectConfig,
   injectConnect,
+  injectConnectorClient,
   injectConnectors,
   injectDisconnect,
   injectReconnect,
@@ -44,6 +45,7 @@ import { CardComponent } from './ui/card.component';
       <app-card title="Current block tx count" [query]="blockTxCount" />
       <app-card title="Balance" [query]="balance" />
       <app-card title="Bytecode" [query]="bytecodeQ" />
+      <app-card title="Connector Client" [query]="connectorClientQ" />
     </div>
 
     <h3>Connections</h3>
@@ -120,6 +122,7 @@ export class AppComponent {
 
   bytecodeQ = injectBytecode(() => ({ address: this.address() }));
   client = injectClient();
+  connectorClientQ = injectConnectorClient();
 
   constructor() {
     this.reconnect.reconnect();
