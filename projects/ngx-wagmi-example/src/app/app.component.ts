@@ -36,6 +36,7 @@ import {
   injectSendTransaction,
   injectSignMessage,
   injectSignTypedData,
+  injectSimulateContract,
   injectSwitchChain,
   injectWatchAsset,
   injectWatchBlockNumber,
@@ -237,6 +238,16 @@ export class AppComponent {
   sendTxM = injectSendTransaction();
   signMessageM = injectSignMessage();
   signTypedDataM = injectSignTypedData();
+  simulateContractQ = injectSimulateContract(() => ({
+    abi: erc20Abi,
+    address: '0x6b175474e89094c44da98b954eedeac495271d0f' as const,
+    functionName: 'transferFrom',
+    args: [
+      '0xd2135CfB216b74109775236E36d4b433F1DF507B' as const,
+      '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e' as const,
+      123n,
+    ],
+  }));
 
   constructor() {
     this.reconnect.reconnect();

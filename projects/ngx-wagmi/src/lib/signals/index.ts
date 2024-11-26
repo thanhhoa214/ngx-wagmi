@@ -34,6 +34,7 @@ export * from "./reconnect";
 export * from "./sendTransaction";
 export * from "./signMessage";
 export * from "./signTypedData";
+export * from "./simulateContract";
 export * from "./switchChain";
 export * from "./watchAsset";
 export * from "./watchBlockNumber";
