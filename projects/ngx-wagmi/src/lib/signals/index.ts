@@ -3,6 +3,7 @@ export * from "./accountEffect";
 export * from "./balance";
 export * from "./block";
 export * from "./blockTransactionCount";
+export * from "./bytecode";
 export * from "./chainId";
 export * from "./chains";
 export * from "./config";

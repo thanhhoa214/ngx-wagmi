@@ -9,6 +9,7 @@ import { provideTanStackQuery, QueryClient, withDevtools } from '@tanstack/angul
 import { createConfig, http } from '@wagmi/core';
 import { base, mainnet } from '@wagmi/core/chains';
 
+import { provideHighlightOptions } from 'ngx-highlightjs';
 import { routes } from './app.routes';
 
 const defaultConfig = createConfig({
@@ -27,5 +28,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideTanStackQuery(new QueryClient(), withDevtools()),
     provideConfig(defaultConfig),
+    provideHighlightOptions({ fullLibraryLoader: () => import('highlight.js') }),
   ],
 };

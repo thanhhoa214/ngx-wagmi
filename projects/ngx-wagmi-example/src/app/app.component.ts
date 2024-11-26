@@ -6,6 +6,7 @@ import {
   injectBalance,
   injectBlock,
   injectBlockTransactionCount,
+  injectBytecode,
   injectChainId,
   injectChains,
   injectConfig,
@@ -21,19 +22,26 @@ import {
 
 import { injected } from '@wagmi/core';
 import { Chain } from '@wagmi/core/chains';
+import { CardComponent } from './ui/card.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   template: `
     <ul>
-      <li>Account: {{ account().address }}</li>
-      <li>Chain ID: {{ chainId() }}</li>
-      <li>Current block: {{ block.data()?.number }} includes {{ blockTxCount.data() }} txs</li>
       <li>
-        Balance: {{ balance.data()?.symbol }}{{ balance.data()?.value }}, {{ balance.isLoading() }},
-        {{ balance.error() }}
+        @if (account().isConnected) {
+          <button (click)="disconnectM.disconnect()">Disconnect</button>
+          Account: {{ account().address }}
+        } @else {
+          <button (click)="connect.connect({ connector: injectedConnector })">Connect</button>
+        }
       </li>
+      <li>Chain ID: {{ chainId() }}</li>
+      <app-card title="Current block" [query]="block" />
+      <app-card title="Current block tx count" [query]="blockTxCount" />
+      <app-card title="Balance" [query]="balance" />
+      <app-card title="Bytecode" [query]="bytecodeQ" />
     </ul>
 
     <br />
@@ -41,9 +49,6 @@ import { Chain } from '@wagmi/core/chains';
     @for (item of connectors(); track item.id) {
       <button (click)="item.connect()">Connect to {{ item.id }}</button>
     }
-    <button (click)="connect.connect({ connector: injectedConnector })">Connect</button>
-    <button (click)="disconnectM.disconnect()">Disconnect</button>
-
     <br />
     <h3>Switch Chain</h3>
     <ul>
@@ -70,6 +75,7 @@ import { Chain } from '@wagmi/core/chains';
     </button>
     <p>{{ watchAssetM.error()?.message }}</p>
   `,
+  imports: [CardComponent],
 })
 export class AppComponent {
   enabled = signal(true);
@@ -110,6 +116,8 @@ export class AppComponent {
   blockTxCount = injectBlockTransactionCount(() => ({
     blockNumber: this.block.data()?.number,
   }));
+
+  bytecodeQ = injectBytecode(() => ({ address: this.address() }));
 
   constructor() {
     this.reconnect.reconnect();
