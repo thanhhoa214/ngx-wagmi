@@ -27,12 +27,15 @@ import {
   injectEstimateMaxPriorityFeePerGas,
   injectFeeHistory,
   injectGasPrice,
+  injectPrepareTransactionRequest,
+  injectProof,
   injectReconnect,
   injectSwitchChain,
   injectWatchAsset,
   injectWatchBlockNumber,
   injectWatchBlocks,
 } from 'ngx-wagmi';
+import { parseEther } from 'viem';
 import { CardComponent } from './ui/card.component';
 
 @Component({
@@ -96,6 +99,8 @@ import { CardComponent } from './ui/card.component';
       <app-card title="maxPriorityFeePerGas" [query]="maxPriorityFeePerGas" />
       <app-card title="feeHistory" [query]="feeHistory" />
       <app-card title="gasPrice" [query]="gasPrice" />
+      <app-card title="proof" [query]="proof" />
+      <app-card title="preparedTxRequest" [query]="preparedTxRequest" />
     </div>
   `,
   imports: [CardComponent],
@@ -166,6 +171,15 @@ export class AppComponent {
   maxPriorityFeePerGas = injectEstimateMaxPriorityFeePerGas();
   feeHistory = injectFeeHistory(() => ({ blockCount: 4, rewardPercentiles: [25, 75] }));
   gasPrice = injectGasPrice();
+
+  proof = injectProof(() => ({
+    address: '0x4200000000000000000000000000000000000016',
+    storageKeys: ['0x4a932049252365b3eedbc5190e18949f2ec11f39d3bef2d259764799a1b27d99'],
+  }));
+  preparedTxRequest = injectPrepareTransactionRequest(() => ({
+    to: '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
+    value: parseEther('1'),
+  }));
 
   constructor() {
     this.reconnect.reconnect();
