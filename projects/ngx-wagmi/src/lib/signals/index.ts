@@ -24,6 +24,7 @@ export * from "./estimateFeePerGas";
 export * from "./estimateGas";
 export * from "./estimateMaxPriorityFeePerGas";
 export * from "./feeHistory";
+export * from "./gasPrice";
 export * from "./reconnect";
 export * from "./switchChain";
 export * from "./watchAsset";

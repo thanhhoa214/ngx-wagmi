@@ -26,6 +26,7 @@ import {
   injectEstimateGas,
   injectEstimateMaxPriorityFeePerGas,
   injectFeeHistory,
+  injectGasPrice,
   injectReconnect,
   injectSwitchChain,
   injectWatchAsset,
@@ -94,6 +95,7 @@ import { CardComponent } from './ui/card.component';
       <app-card title="gas" [query]="gas" />
       <app-card title="maxPriorityFeePerGas" [query]="maxPriorityFeePerGas" />
       <app-card title="feeHistory" [query]="feeHistory" />
+      <app-card title="gasPrice" [query]="gasPrice" />
     </div>
   `,
   imports: [CardComponent],
@@ -163,6 +165,7 @@ export class AppComponent {
   gas = injectEstimateGas();
   maxPriorityFeePerGas = injectEstimateMaxPriorityFeePerGas();
   feeHistory = injectFeeHistory(() => ({ blockCount: 4, rewardPercentiles: [25, 75] }));
+  gasPrice = injectGasPrice();
 
   constructor() {
     this.reconnect.reconnect();
