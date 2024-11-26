@@ -29,6 +29,7 @@ import {
   injectGasPrice,
   injectPrepareTransactionRequest,
   injectProof,
+  injectPublicClient,
   injectReconnect,
   injectSwitchChain,
   injectWatchAsset,
@@ -147,7 +148,8 @@ export class AppComponent {
   }));
 
   bytecodeQ = injectBytecode(() => ({ address: this.address() }));
-  client = injectClient();
+  private client = injectClient();
+  private publicClient = injectPublicClient();
   connectorClientQ = injectConnectorClient();
 
   ensAddress = injectEnsAddress(() => ({ name: 'vitalik.eth' }));
@@ -183,6 +185,9 @@ export class AppComponent {
 
   constructor() {
     this.reconnect.reconnect();
+
+    console.log('client', this.client());
+    console.log('publicClient', this.publicClient());
   }
 
   switchChain(chainId: Chain['id']) {
