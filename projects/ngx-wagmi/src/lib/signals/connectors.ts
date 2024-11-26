@@ -12,14 +12,6 @@ export type InjectConnectorsReturnType = GetConnectorsReturnType;
 export function injectConnectors(): Signal<InjectConnectorsReturnType> {
   const config = injectConfig();
   const connectors = signal<InjectConnectorsReturnType>(getConnectors(config));
-
-  effect((onClean) =>
-    onClean(
-      watchConnectors(config, {
-        onChange: (newConnectors) => connectors.set(newConnectors),
-      }),
-    ),
-  );
-
+  effect((onClean) => onClean(watchConnectors(config, { onChange: connectors.set })));
   return connectors.asReadonly();
 }

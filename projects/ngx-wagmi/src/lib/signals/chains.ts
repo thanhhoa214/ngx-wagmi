@@ -10,14 +10,6 @@ export type InjectChainsReturnType<config extends Config = Config> = GetChainsRe
 export function injectChains() {
   const config = injectConfig();
   const account = signal(getChains(config));
-
-  effect((onClean) =>
-    onClean(
-      watchChains(config, {
-        onChange: (newAccount) => account.set(newAccount),
-      }),
-    ),
-  );
-
+  effect((onClean) => onClean(watchChains(config, { onChange: account.set })));
   return account.asReadonly();
 }

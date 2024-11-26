@@ -10,7 +10,7 @@ import {
 
 import { computed } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import type { ConfigParameter, QueryParameter } from '../types/properties';
+import type { QueryParameter } from '../types/properties';
 import { type InjectQueryReturnType, emptyObjFn, queryOptionsSupportBigInt } from '../utils/query';
 import { injectChainId } from './chainId';
 import { injectConfig } from './config';
@@ -21,7 +21,6 @@ export type InjectBlockTransactionCountParameters<
   selectData = GetBlockTransactionCountData,
 > = UnionCompute<
   GetBlockTransactionCountOptions<config, chainId> &
-    ConfigParameter<config> &
     QueryParameter<
       GetBlockTransactionCountQueryFnData,
       GetBlockTransactionCountErrorType,

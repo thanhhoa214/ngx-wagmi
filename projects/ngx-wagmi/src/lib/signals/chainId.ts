@@ -9,14 +9,6 @@ export function injectChainId<config extends Config = ResolvedRegister['config']
 > {
   const config = injectConfig();
   const chainId = signal(getChainId(config));
-
-  effect((onClean) =>
-    onClean(
-      watchChainId(config, {
-        onChange: (newId) => chainId.set(newId),
-      }),
-    ),
-  );
-
+  effect((onClean) => onClean(watchChainId(config, { onChange: chainId.set })));
   return chainId.asReadonly();
 }

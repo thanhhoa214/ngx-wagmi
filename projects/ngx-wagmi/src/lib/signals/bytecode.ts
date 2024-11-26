@@ -9,14 +9,13 @@ import {
   type GetBytecodeQueryKey,
   getBytecodeQueryOptions,
 } from '@wagmi/core/query';
-import type { ConfigParameter, QueryParameter } from '../types/properties';
+import type { QueryParameter } from '../types/properties';
 import { type InjectQueryReturnType, emptyObjFn, queryOptionsSupportBigInt } from '../utils/query';
 import { injectChainId } from './chainId';
 import { injectConfig } from './config';
 
 export type InjectBytecodeParameters<config extends Config = Config, selectData = GetBytecodeData> = Compute<
   GetBytecodeOptions<config> &
-    ConfigParameter<config> &
     QueryParameter<GetBytecodeQueryFnData, GetBytecodeErrorType, selectData, GetBytecodeQueryKey<config>>
 >;
 

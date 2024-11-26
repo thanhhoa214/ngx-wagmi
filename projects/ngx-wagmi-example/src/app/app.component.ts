@@ -9,6 +9,7 @@ import {
   injectBytecode,
   injectChainId,
   injectChains,
+  injectClient,
   injectConfig,
   injectConnect,
   injectConnectors,
@@ -28,23 +29,23 @@ import { CardComponent } from './ui/card.component';
   selector: 'app-root',
   standalone: true,
   template: `
-    <ul>
-      <li>
+    <div>
+      <p>
+        Chain ID: {{ chainId() }}.
+
         @if (account().isConnected) {
           <button (click)="disconnectM.disconnect()">Disconnect</button>
           Account: {{ account().address }}
         } @else {
           <button (click)="connect.connect({ connector: injectedConnector })">Connect</button>
         }
-      </li>
-      <li>Chain ID: {{ chainId() }}</li>
+      </p>
       <app-card title="Current block" [query]="block" />
       <app-card title="Current block tx count" [query]="blockTxCount" />
       <app-card title="Balance" [query]="balance" />
       <app-card title="Bytecode" [query]="bytecodeQ" />
-    </ul>
+    </div>
 
-    <br />
     <h3>Connections</h3>
     @for (item of connectors(); track item.id) {
       <button (click)="item.connect()">Connect to {{ item.id }}</button>
@@ -78,7 +79,7 @@ import { CardComponent } from './ui/card.component';
   imports: [CardComponent],
 })
 export class AppComponent {
-  enabled = signal(true);
+  private enabled = signal(true);
 
   account = injectAccount();
   chainId = injectChainId();
@@ -118,6 +119,7 @@ export class AppComponent {
   }));
 
   bytecodeQ = injectBytecode(() => ({ address: this.address() }));
+  client = injectClient();
 
   constructor() {
     this.reconnect.reconnect();
