@@ -1,7 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 
 import { injected } from '@wagmi/core';
-import { Chain } from '@wagmi/core/chains';
 import {
   injectAccount,
   injectAccountEffect,
@@ -43,11 +42,18 @@ import {
   injectSwitchChain,
   injectTransaction,
   injectTransactionConfirmations,
+  injectTransactionCount,
+  injectTransactionReceipt,
+  injectVerifyMessage,
+  injectVerifyTypedData,
+  injectWaitForTransactionReceipt,
+  injectWalletClient,
   injectWatchAsset,
-  injectWatchBlockNumber,
-  injectWatchBlocks,
+  injectWatchContractEvent,
+  injectWatchPendingTransactions,
+  injectWriteContract,
 } from 'ngx-wagmi';
-import { Address, erc20Abi, parseEther } from 'viem';
+import { Address, erc20Abi, Hash, parseEther } from 'viem';
 import { CardComponent } from './ui/card.component';
 
 @Component({
@@ -92,7 +98,7 @@ import { CardComponent } from './ui/card.component';
       <p class="space-x-2">
         <strong>Switch Chain</strong>
         @for (item of chains(); track item.id) {
-          <button (click)="switchChain(item.id)">Switch to {{ item.name }}</button>
+          <button (click)="switchChainM.switchChain({ chainId: item.id })">Switch to {{ item.name }}</button>
         }
       </p>
 
@@ -110,22 +116,31 @@ import { CardComponent } from './ui/card.component';
           ">
           Add USDT to wallet for watching (watchAsset)
         </button>
+        {{ watchAssetM.isPending() ? 'Pending...' : '' }}
         {{ watchAssetM.error()?.message }}
       </p>
 
       <p class="error">
         <button (click)="sendTx()">Send transaction</button>
+        {{ sendTxM.isPending() ? 'Pending...' : '' }}
         {{ sendTxM.error()?.message }}
       </p>
 
       <p class="error">
         <button (click)="signMessage()">Sign message</button>
+        {{ signMessageM.isPending() ? 'Pending...' : '' }}
         {{ signMessageM.error()?.message }}
       </p>
 
       <p class="error">
         <button (click)="signTypedData()">Sign typed data</button>
+        {{ signTypedDataM.isPending() ? 'Pending...' : '' }}
         {{ signTypedDataM.error()?.message }}
+      </p>
+      <p class="error">
+        <button (click)="writeContract()">Write contract</button>
+        {{ writeContractM.isPending() ? 'Pending...' : '' }}
+        {{ writeContractM.error()?.message }}
       </p>
 
       <app-card title="Current block" [query]="blockQ" />
@@ -152,15 +167,20 @@ import { CardComponent } from './ui/card.component';
       <app-card title="storageAtQ" [query]="storageAtQ" />
       <app-card title="txQ" [query]="txQ" />
       <app-card title="txConfirmationsQ" [query]="txConfirmationsQ" />
+      <app-card title="txCountQ" [query]="txCountQ" />
+      <app-card title="txReceiptQ" [query]="txReceiptQ" />
+      <app-card title="verifyMessageQ" [query]="verifyMessageQ" />
+      <app-card title="verifyTypedDataQ" [query]="verifyTypedDataQ" />
+      <app-card title="walletClientQ" [query]="walletClientQ" />
     </div>
   `,
   imports: [CardComponent],
 })
 export class AppComponent {
   // Testing constants
-  readonly enabled = signal(true);
   readonly vitalik = signal({ address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045' } as const);
   readonly usdtEthAddress = signal<Address>('0xdac17f958d2ee523a2206206994597c13d831ec7');
+  readonly txHash = signal<Address>('0x0fa64daeae54e207aa98613e308c2ba8abfe274f75507e741508cc4db82c8cb5');
   readonly injectedConnector = injected();
 
   // Only injection
@@ -181,7 +201,7 @@ export class AppComponent {
     address: this.address(),
     chainId: this.chainId(),
   }));
-  blockQ = injectBlock(() => ({ watch: true }));
+  blockQ = injectBlock();
   blockTxCountQ = injectBlockTransactionCount(() => ({
     blockNumber: this.blockQ.data()?.number,
   }));
@@ -253,12 +273,14 @@ export class AppComponent {
     address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2',
     slot: '0x0',
   }));
-  txQ = injectTransaction(() => ({
-    hash: '0x0fa64daeae54e207aa98613e308c2ba8abfe274f75507e741508cc4db82c8cb5',
-  }));
-  txConfirmationsQ = injectTransactionConfirmations(() => ({
-    hash: '0x0fa64daeae54e207aa98613e308c2ba8abfe274f75507e741508cc4db82c8cb5',
-  }));
+  txQ = injectTransaction(() => ({ hash: this.txHash() }));
+  txConfirmationsQ = injectTransactionConfirmations(() => ({ hash: this.txHash() }));
+  txCountQ = injectTransactionCount(() => ({ address: this.vitalik().address }));
+  txReceiptQ = injectTransactionReceipt(() => ({ hash: this.txHash() }));
+  verifyMessageQ = injectVerifyMessage(() => signMessagePreset);
+  verifyTypedDataQ = injectVerifyTypedData(() => ({ ...typedDataPreset, ...signedTypeDataPreset }));
+  waitForTxReceiptQ = injectWaitForTransactionReceipt(() => ({ hash: this.txHash() }));
+  walletClientQ = injectWalletClient();
 
   // Injection results in TanStack Mutation
   connectM = injectConnect();
@@ -270,36 +292,28 @@ export class AppComponent {
   switchChainM = injectSwitchChain();
   switchAccountM = injectSwitchAccount();
   watchAssetM = injectWatchAsset();
+  writeContractM = injectWriteContract();
 
   // Injection for effect only
   _accountEffect = injectAccountEffect({
     onConnect: () => console.log('connected'),
     onDisconnect: () => console.log('disconnected'),
   });
-  watchBlocks = injectWatchBlocks(() => ({
-    onBlock: (block) => console.log('block.number', block.number),
+  // watchBlocks = injectWatchBlocks(() => ({
+  //   onBlock: (block) => console.log('block.number', block.number),
+  // }));
+  // watchBlockNumber = injectWatchBlockNumber(() => ({
+  //   onBlockNumber: (blockNumber) => console.log('blockNumber', blockNumber),
+  // }));
+  watchTransferEvent = injectWatchContractEvent(() => ({
+    abi: erc20Abi,
+    eventName: 'Transfer',
+    address: '0x1Bc38c8465F28e27c9808ab3A5AfAa2b33631FFc',
+    onLogs: (logs) => console.log('logs', logs),
   }));
-  watchBlockNumber = injectWatchBlockNumber(() => ({
-    onBlockNumber: (blockNumber) => console.log('blockNumber', blockNumber),
+  pendingTxs = injectWatchPendingTransactions(() => ({
+    onTransactions: (txs) => console.log('txs', txs),
   }));
-
-  constructor() {
-    this.reconnectM.reconnect();
-
-    console.log('client', this.client());
-    console.log('publicClient', this.publicClient());
-  }
-
-  switchChain(chainId: Chain['id']) {
-    this.switchChainM.switchChain({ chainId });
-    this.enabled.set(!this.enabled());
-  }
-
-  switchAccount() {
-    this.switchAccountM.switchAccount({
-      connector: this.connections()[0].connector,
-    });
-  }
 
   sendTx() {
     this.sendTxM.sendTransaction({
@@ -309,50 +323,80 @@ export class AppComponent {
   }
 
   signMessage() {
-    this.signMessageM.signMessage({
-      message: 'This is a test message. You usually want to integrate for your signing in flow.',
-    });
+    this.signMessageM.signMessageAsync({ message: signMessagePreset.message });
   }
 
   signTypedData() {
+    // incompatible between wagmi and viem, wagmi asks for number, viem asks for bigint
     this.signTypedDataM
       .signTypedDataAsync({
-        types: {
-          EIP712Domain: [
-            { name: 'name', type: 'string' },
-            { name: 'version', type: 'string' },
-            { name: 'chainId', type: 'uint256' },
-            { name: 'verifyingContract', type: 'address' },
-          ],
-          Person: [
-            { name: 'name', type: 'string' },
-            { name: 'wallet', type: 'address' },
-          ],
-          Mail: [
-            { name: 'from', type: 'Person' },
-            { name: 'to', type: 'Person' },
-            { name: 'contents', type: 'string' },
-          ],
-        },
-        primaryType: 'Mail',
+        ...typedDataPreset,
         domain: {
-          name: 'Ether Mail',
-          version: '1',
-          chainId: BigInt(1),
-          verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
-        },
-        message: {
-          from: {
-            name: 'Cow',
-            wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
-          },
-          to: {
-            name: 'Bob',
-            wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
-          },
-          contents: 'Hello, Bob!',
+          ...typedDataPreset.domain,
+          chainId: BigInt(typedDataPreset.domain.chainId),
         },
       })
       .then(console.log);
   }
+
+  writeContract() {
+    this.writeContractM.writeContractAsync({
+      abi: erc20Abi,
+      address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+      functionName: 'transferFrom',
+      args: ['0xd2135CfB216b74109775236E36d4b433F1DF507B', '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e', 123n],
+    });
+  }
 }
+
+export const typedDataPreset = {
+  types: {
+    EIP712Domain: [
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' },
+    ],
+    Person: [
+      { name: 'name', type: 'string' },
+      { name: 'wallet', type: 'address' },
+    ],
+    Mail: [
+      { name: 'from', type: 'Person' },
+      { name: 'to', type: 'Person' },
+      { name: 'contents', type: 'string' },
+    ],
+  },
+  primaryType: 'Mail',
+  domain: {
+    name: 'Ether Mail',
+    version: '1',
+    // incompatible between wagmi and viem, wagmi asks for number, viem asks for bigint
+    chainId: 1,
+    verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+  },
+  message: {
+    from: {
+      name: 'Cow',
+      wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
+    },
+    to: {
+      name: 'Bob',
+      wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
+    },
+    contents: 'Hello, Bob!',
+  },
+} as const;
+
+export const signedTypeDataPreset = {
+  address: '0xCe38295c9fe3919694031fa1Cb9BBC09Ea69a538' as Address,
+  signature:
+    '0x854fd484df643afd1d2f61990a514422c216ba594df1598f0f4212e8fd43b3564351193b40903ef2842b132c036c75714523dd636250312c99dacd96052f14c41c' as Hash,
+};
+
+export const signMessagePreset = {
+  address: '0xCe38295c9fe3919694031fa1Cb9BBC09Ea69a538' as Address,
+  message: 'This is a test message. You usually want to integrate for your signing in flow.',
+  signature:
+    '0xf5045bd9a2b9c7e88c8d9babb7da4f38e7acf0210fa63c5f0f532d08ffbf3963527ab0dea61bc9aa24d72dfdebc0d685edc8889ad03618a534c7067ae91204b51c' as Hash,
+};

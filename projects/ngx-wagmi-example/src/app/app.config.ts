@@ -2,21 +2,18 @@ import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-
-import { provideConfig } from 'ngx-wagmi';
-
 import { provideTanStackQuery, QueryClient, withDevtools } from '@tanstack/angular-query-experimental';
 import { createConfig, http } from '@wagmi/core';
-import { base, mainnet } from '@wagmi/core/chains';
-
+import { arbitrumSepolia, baseSepolia } from '@wagmi/core/chains';
 import { provideHighlightOptions } from 'ngx-highlightjs';
+import { provideConfig } from 'ngx-wagmi';
 import { routes } from './app.routes';
 
 const defaultConfig = createConfig({
-  chains: [mainnet, base],
+  chains: [baseSepolia, arbitrumSepolia],
   transports: {
-    [mainnet.id]: http(),
-    [base.id]: http(),
+    [baseSepolia.id]: http(),
+    [arbitrumSepolia.id]: http(),
   },
 });
 

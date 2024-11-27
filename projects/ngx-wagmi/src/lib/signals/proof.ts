@@ -11,7 +11,7 @@ import {
 import { computed } from '@angular/core';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import type { ConfigParameter, QueryParameter } from '../types/properties';
-import { type InjectQueryReturnType, emptyObjFn } from '../utils/query';
+import { type InjectQueryReturnType, emptyObjFn, queryOptionsSupportBigInt } from '../utils/query';
 import { injectChainId } from './chainId';
 import { injectConfig } from './config';
 
@@ -38,7 +38,7 @@ export function injectProof<config extends Config = ResolvedRegister['config'], 
       chainId,
     });
     const enabled = Boolean(address && storageKeys && (query.enabled ?? true));
-    return { ...query, ...options, enabled };
+    return { ...queryOptionsSupportBigInt, ...query, ...options, enabled };
   });
 
   return injectQuery(props) as InjectProofReturnType<selectData>;
