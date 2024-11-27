@@ -57,7 +57,7 @@ import { CardComponent } from './ui/card.component';
           <button (click)="disconnectM.disconnect()">Disconnect</button>
           Account: {{ account().address }}
         } @else {
-          <button (click)="connect.connect({ connector: injectedConnector })">Connect</button>
+          <button (click)="connectM.connect({ connector: injectedConnector })">Connect</button>
         }
       </div>
 
@@ -107,25 +107,25 @@ import { CardComponent } from './ui/card.component';
         {{ signTypedDataM.error()?.message }}
       </p>
 
-      <app-card title="Current block" [query]="block" />
-      <app-card title="Current block tx count" [query]="blockTxCount" />
-      <app-card title="Balance" [query]="balance" />
+      <app-card title="Current block" [query]="blockQ" />
+      <app-card title="Current block tx count" [query]="blockTxCountQ" />
+      <app-card title="Balance" [query]="balanceQ" />
       <app-card title="Bytecode" [query]="bytecodeQ" />
       <app-card title="Connector Client" [query]="connectorClientQ" />
-      <app-card title="ensAddress of vitalik" [query]="ensAddress" />
-      <app-card title="ensName of vitalik" [query]="ensName" />
-      <app-card title="ensAvatar of vitalik" [query]="ensAvatar" />
-      <app-card title="ensResolver of vitalik" [query]="ensResolver" />
-      <app-card title="ensText of vitalik" [query]="ensText" />
-      <app-card title="feesPerGas" [query]="feesPerGas" />
-      <app-card title="gas" [query]="gas" />
-      <app-card title="maxPriorityFeePerGas" [query]="maxPriorityFeePerGas" />
-      <app-card title="feeHistory" [query]="feeHistory" />
-      <app-card title="gasPrice" [query]="gasPrice" />
-      <app-card title="proof" [query]="proof" />
-      <app-card title="preparedTxRequest" [query]="preparedTxRequest" />
-      <app-card title="usdtName" [query]="usdtName" />
-      <app-card title="usdtInfo" [query]="usdtInfo">
+      <app-card title="ensAddressQ of vitalik" [query]="ensAddressQ" />
+      <app-card title="ensNameQ of vitalik" [query]="ensNameQ" />
+      <app-card title="ensAvatarQ of vitalik" [query]="ensAvatarQ" />
+      <app-card title="ensResolverQ of vitalik" [query]="ensResolverQ" />
+      <app-card title="ensTextQ of vitalik" [query]="ensTextQ" />
+      <app-card title="feesPerGasQ" [query]="feesPerGasQ" />
+      <app-card title="gasQ" [query]="gasQ" />
+      <app-card title="maxPriorityFeePerGasQ" [query]="maxPriorityFeePerGasQ" />
+      <app-card title="feeHistoryQ" [query]="feeHistoryQ" />
+      <app-card title="gasPriceQ" [query]="gasPriceQ" />
+      <app-card title="proofQ" [query]="proofQ" />
+      <app-card title="preparedTxRequestQ" [query]="preparedTxRequestQ" />
+      <app-card title="usdtNameQ" [query]="usdtNameQ" />
+      <app-card title="usdtInfoQ" [query]="usdtInfoQ">
         <button (click)="usdtEthAddress.set('0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9')">Fetch AAVE info</button>
       </app-card>
     </div>
@@ -133,89 +133,69 @@ import { CardComponent } from './ui/card.component';
   imports: [CardComponent],
 })
 export class AppComponent {
-  private enabled = signal(true);
-  private vitalik = signal({ address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045' } as const);
-  usdtEthAddress = signal<Address>('0xdac17f958d2ee523a2206206994597c13d831ec7');
+  // Testing constants
+  readonly enabled = signal(true);
+  readonly vitalik = signal({ address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045' } as const);
+  readonly usdtEthAddress = signal<Address>('0xdac17f958d2ee523a2206206994597c13d831ec7');
+  readonly injectedConnector = injected();
 
-  account = injectAccount();
-  chainId = injectChainId();
-  address = computed(() => this.account().address);
+  // Only injection
   config = injectConfig();
 
-  balance = injectBalance(() => ({
+  // Injection results in Signal
+  account = injectAccount();
+  address = computed(() => this.account().address);
+  chainId = injectChainId();
+  chains = injectChains();
+  connectors = injectConnectors();
+  private client = injectClient();
+  private publicClient = injectPublicClient();
+
+  // Injection results in TanStack Query
+  balanceQ = injectBalance(() => ({
     address: this.address(),
     chainId: this.chainId(),
   }));
-  _accountEffect = injectAccountEffect({
-    onConnect: () => console.log('connected'),
-    onDisconnect: () => console.log('disconnected'),
-  });
-  connectors = injectConnectors();
-  connect = injectConnect();
-  disconnectM = injectDisconnect();
-  reconnect = injectReconnect();
-
-  watchBlocks = injectWatchBlocks(() => ({
-    onBlock: (block) => console.log('block.number', block.number),
+  blockQ = injectBlock(() => ({ watch: true }));
+  blockTxCountQ = injectBlockTransactionCount(() => ({
+    blockNumber: this.blockQ.data()?.number,
   }));
-
-  block = injectBlock(() => ({ watch: true }));
-  watchBlockNumber = injectWatchBlockNumber(() => ({
-    onBlockNumber: (blockNumber) => console.log('blockNumber', blockNumber),
-  }));
-
-  readonly injectedConnector = injected();
-
-  chains = injectChains();
-  switchChainM = injectSwitchChain();
-
-  watchAssetM = injectWatchAsset();
-  blockTxCount = injectBlockTransactionCount(() => ({
-    blockNumber: this.block.data()?.number,
-  }));
-
   bytecodeQ = injectBytecode(() => ({ address: this.address() }));
-  private client = injectClient();
-  private publicClient = injectPublicClient();
   connectorClientQ = injectConnectorClient();
-
-  ensAddress = injectEnsAddress(() => ({ name: 'vitalik.eth' }));
-  ensName = injectEnsName(() => ({ address: this.vitalik().address }));
-  ensAvatar = injectEnsAvatar(() => ({
-    name: this.ensName.data()!,
-    query: { enabled: !!this.ensName.data() },
+  ensAddressQ = injectEnsAddress(() => ({ name: 'vitalik.eth' }));
+  ensNameQ = injectEnsName(() => ({ address: this.vitalik().address }));
+  ensAvatarQ = injectEnsAvatar(() => ({
+    name: this.ensNameQ.data()!,
+    query: { enabled: !!this.ensNameQ.data() },
   }));
-  ensText = injectEnsText(() => ({
-    name: this.ensName.data()!,
+  ensTextQ = injectEnsText(() => ({
+    name: this.ensNameQ.data()!,
     key: 'com.twitter',
-    query: { enabled: !!this.ensName.data() },
+    query: { enabled: !!this.ensNameQ.data() },
   }));
-  ensResolver = injectEnsResolver(() => ({
-    name: this.ensName.data()!,
-    query: { enabled: !!this.ensName.data() },
+  ensResolverQ = injectEnsResolver(() => ({
+    name: this.ensNameQ.data()!,
+    query: { enabled: !!this.ensNameQ.data() },
   }));
-
-  feesPerGas = injectEstimateFeesPerGas();
-  gas = injectEstimateGas();
-  maxPriorityFeePerGas = injectEstimateMaxPriorityFeePerGas();
-  feeHistory = injectFeeHistory(() => ({ blockCount: 4, rewardPercentiles: [25, 75] }));
-  gasPrice = injectGasPrice();
-
-  proof = injectProof(() => ({
+  feesPerGasQ = injectEstimateFeesPerGas();
+  gasQ = injectEstimateGas();
+  maxPriorityFeePerGasQ = injectEstimateMaxPriorityFeePerGas();
+  feeHistoryQ = injectFeeHistory(() => ({ blockCount: 4, rewardPercentiles: [25, 75] }));
+  gasPriceQ = injectGasPrice();
+  proofQ = injectProof(() => ({
     address: '0x4200000000000000000000000000000000000016',
     storageKeys: ['0x4a932049252365b3eedbc5190e18949f2ec11f39d3bef2d259764799a1b27d99'],
   }));
-  preparedTxRequest = injectPrepareTransactionRequest(() => ({
+  preparedTxRequestQ = injectPrepareTransactionRequest(() => ({
     to: '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
     value: parseEther('1'),
   }));
-
-  usdtName = injectReadContract(() => ({
+  usdtNameQ = injectReadContract(() => ({
     abi: erc20Abi,
     address: this.usdtEthAddress(),
     functionName: 'name',
   }));
-  usdtInfo = injectReadContracts(() => ({
+  usdtInfoQ = injectReadContracts(() => ({
     contracts: [
       {
         abi: erc20Abi,
@@ -234,10 +214,6 @@ export class AppComponent {
       },
     ],
   }));
-
-  sendTxM = injectSendTransaction();
-  signMessageM = injectSignMessage();
-  signTypedDataM = injectSignTypedData();
   simulateContractQ = injectSimulateContract(() => ({
     abi: erc20Abi,
     address: '0x6b175474e89094c44da98b954eedeac495271d0f' as const,
@@ -249,8 +225,30 @@ export class AppComponent {
     ],
   }));
 
+  // Injection results in TanStack Mutation
+  connectM = injectConnect();
+  disconnectM = injectDisconnect();
+  reconnectM = injectReconnect();
+  sendTxM = injectSendTransaction();
+  signMessageM = injectSignMessage();
+  signTypedDataM = injectSignTypedData();
+  switchChainM = injectSwitchChain();
+  watchAssetM = injectWatchAsset();
+
+  // Injection for effect only
+  _accountEffect = injectAccountEffect({
+    onConnect: () => console.log('connected'),
+    onDisconnect: () => console.log('disconnected'),
+  });
+  watchBlocks = injectWatchBlocks(() => ({
+    onBlock: (block) => console.log('block.number', block.number),
+  }));
+  watchBlockNumber = injectWatchBlockNumber(() => ({
+    onBlockNumber: (blockNumber) => console.log('blockNumber', blockNumber),
+  }));
+
   constructor() {
-    this.reconnect.reconnect();
+    this.reconnectM.reconnect();
 
     console.log('client', this.client());
     console.log('publicClient', this.publicClient());
