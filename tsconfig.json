@@ -9,7 +9,12 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "paths": {
-      "ngx-wagmi": ["./dist/ngx-wagmi"]
+      "ngx-wagmi": [
+        "./dist/ngx-wagmi"
+      ],
+      "seedkit": [
+        "./dist/seedkit"
+      ]
     },
     "esModuleInterop": true,
     "sourceMap": true,
