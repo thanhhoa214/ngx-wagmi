@@ -14,6 +14,7 @@ import {
   injectClient,
   injectConfig,
   injectConnect,
+  injectConnections,
   injectConnectorClient,
   injectConnectors,
   injectDisconnect,
@@ -37,7 +38,11 @@ import {
   injectSignMessage,
   injectSignTypedData,
   injectSimulateContract,
+  injectStorageAt,
+  injectSwitchAccount,
   injectSwitchChain,
+  injectTransaction,
+  injectTransactionConfirmations,
   injectWatchAsset,
   injectWatchBlockNumber,
   injectWatchBlocks,
@@ -50,8 +55,9 @@ import { CardComponent } from './ui/card.component';
   standalone: true,
   template: `
     <div>
-      <div class="space-x-2">
-        Chain ID: {{ chainId() }}.
+      <p class="space-x-2">
+        Chain: {{ account().chain?.name }} ({{ chainId() }})
+        <br />
 
         @if (account().isConnected) {
           <button (click)="disconnectM.disconnect()">Disconnect</button>
@@ -59,21 +65,36 @@ import { CardComponent } from './ui/card.component';
         } @else {
           <button (click)="connectM.connect({ connector: injectedConnector })">Connect</button>
         }
-      </div>
+      </p>
 
-      <div class="space-x-2">
+      <p class="space-x-2">
         <strong>Connections</strong>
+        @for (item of connections(); track item.connector.id) {
+          <button (click)="switchAccountM.switchAccount({ connector: item.connector })">
+            Switch account from "{{ item.connector.name }}" ({{ item.connector.id }})
+          </button>
+          Account's addresses connected:
+          <ul>
+            @for (accAddress of item.accounts; track accAddress) {
+              <li>{{ accAddress }}</li>
+            }
+          </ul>
+        }
+      </p>
+
+      <p class="space-x-2">
+        <strong>Connectors</strong>
         @for (item of connectors(); track item.id) {
           <button (click)="item.connect()">Connect to {{ item.id }}</button>
         }
-      </div>
+      </p>
 
-      <div class="space-x-2">
+      <p class="space-x-2">
         <strong>Switch Chain</strong>
         @for (item of chains(); track item.id) {
           <button (click)="switchChain(item.id)">Switch to {{ item.name }}</button>
         }
-      </div>
+      </p>
 
       <p class="error">
         <button
@@ -128,6 +149,9 @@ import { CardComponent } from './ui/card.component';
       <app-card title="usdtInfoQ" [query]="usdtInfoQ">
         <button (click)="usdtEthAddress.set('0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9')">Fetch AAVE info</button>
       </app-card>
+      <app-card title="storageAtQ" [query]="storageAtQ" />
+      <app-card title="txQ" [query]="txQ" />
+      <app-card title="txConfirmationsQ" [query]="txConfirmationsQ" />
     </div>
   `,
   imports: [CardComponent],
@@ -147,6 +171,7 @@ export class AppComponent {
   address = computed(() => this.account().address);
   chainId = injectChainId();
   chains = injectChains();
+  connections = injectConnections();
   connectors = injectConnectors();
   private client = injectClient();
   private publicClient = injectPublicClient();
@@ -224,6 +249,16 @@ export class AppComponent {
       123n,
     ],
   }));
+  storageAtQ = injectStorageAt(() => ({
+    address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2',
+    slot: '0x0',
+  }));
+  txQ = injectTransaction(() => ({
+    hash: '0x0fa64daeae54e207aa98613e308c2ba8abfe274f75507e741508cc4db82c8cb5',
+  }));
+  txConfirmationsQ = injectTransactionConfirmations(() => ({
+    hash: '0x0fa64daeae54e207aa98613e308c2ba8abfe274f75507e741508cc4db82c8cb5',
+  }));
 
   // Injection results in TanStack Mutation
   connectM = injectConnect();
@@ -233,6 +268,7 @@ export class AppComponent {
   signMessageM = injectSignMessage();
   signTypedDataM = injectSignTypedData();
   switchChainM = injectSwitchChain();
+  switchAccountM = injectSwitchAccount();
   watchAssetM = injectWatchAsset();
 
   // Injection for effect only
@@ -257,6 +293,12 @@ export class AppComponent {
   switchChain(chainId: Chain['id']) {
     this.switchChainM.switchChain({ chainId });
     this.enabled.set(!this.enabled());
+  }
+
+  switchAccount() {
+    this.switchAccountM.switchAccount({
+      connector: this.connections()[0].connector,
+    });
   }
 
   sendTx() {

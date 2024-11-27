@@ -42,12 +42,7 @@ export function injectBalance<config extends Config = ResolvedRegister['config']
     });
     const enabled = Boolean(address && (query.enabled ?? true));
 
-    return {
-      ...queryOptionsSupportBigInt,
-      ...query,
-      ...options,
-      enabled,
-    };
+    return { ...queryOptionsSupportBigInt, ...query, ...options, enabled };
   });
 
   return injectQuery(props);

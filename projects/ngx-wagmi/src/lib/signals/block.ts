@@ -76,12 +76,7 @@ export function injectBlock<
       chainId,
     });
     const enabled = Boolean(query.enabled ?? true);
-    return {
-      ...queryOptionsSupportBigInt,
-      ...query,
-      ...options,
-      enabled,
-    };
+    return { ...queryOptionsSupportBigInt, ...query, ...options, enabled };
   });
 
   injectWatchBlocks(() => {

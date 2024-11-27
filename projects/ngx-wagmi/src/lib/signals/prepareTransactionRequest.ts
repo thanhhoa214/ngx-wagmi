@@ -73,12 +73,7 @@ export function injectPrepareTransactionRequest<
       } as PrepareTransactionRequestOptions<config, chainId, request>,
     );
     const enabled = Boolean(to && (query.enabled ?? true));
-    return {
-      ...queryOptionsSupportBigInt,
-      ...query,
-      ...options,
-      enabled,
-    };
+    return { ...queryOptionsSupportBigInt, ...query, ...options, enabled };
   });
 
   return injectQuery(props) as unknown as InjectPrepareTransactionRequestReturnType<

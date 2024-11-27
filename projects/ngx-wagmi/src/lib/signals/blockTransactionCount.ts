@@ -50,12 +50,7 @@ export function injectBlockTransactionCount<
       ...parameters,
       chainId,
     });
-
-    return {
-      ...queryOptionsSupportBigInt,
-      ...query,
-      ...options,
-    };
+    return { ...queryOptionsSupportBigInt, ...query, ...options };
   });
 
   return injectQuery(props) as InjectBlockTransactionCountReturnType<selectData>;
