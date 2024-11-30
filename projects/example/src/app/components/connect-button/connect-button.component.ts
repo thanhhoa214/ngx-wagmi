@@ -69,9 +69,9 @@ export class ConnectButtonComponent {
     {
       icon: LogOut,
       label: 'Disconnect',
-      onClick: () => {
+      onClick: async () => {
+        await this.disconnectM.disconnectAsync();
         this.modalOpenning.set(false);
-        // await this.disconnectM.disconnectAsync();
       },
     },
   ];

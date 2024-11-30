@@ -1,5 +1,5 @@
 @if (connectingConnector(); as connector) {
-  <div class="mt-4 text-center py-4">
+  <div class="mt-2 text-center py-4">
     <img
       [src]="icons()[connector.rkDetails.id]"
       [alt]="connector.name"
@@ -14,7 +14,7 @@
     </footer>
   </div>
 } @else {
-  <ol class="mt-2">
+  <ol class="w-full">
     @for (group of connectorGroups(); track group.groupName) {
       <li>
         <ul>
