@@ -1,0 +1,79 @@
+@if (account().isConnected) {
+  @if (account().address; as address) {
+    @if (avatar(); as avatar) {
+      <button class="btn primary inline-flex gap-2 pl-2 pr-2.5" (click)="showAccountModal()">
+        <span
+          class="inline-flex justify-center items-center border w-6 h-6 rounded-full shrink-0"
+          [style.backgroundColor]="avatar.color + '90'">
+          {{ avatar.emoji }}
+        </span>
+        <strong class="text-base"> {{ address | call: shortenAddress }} </strong>
+        <div class="w-px h-6 bg-background/50"></div>
+        <button [title]="currentChain()?.name" class="relative">
+          <img src="/chainIcons{{ currentChain()?.iconUrl }}" class="w-6 h-6 rounded-full" />
+
+          @if (currentChain()?.testnet) {
+            <span
+              class="rounded-full inline-flex justify-center items-center w-3 aspect-square text-[8px] font-bold bg-red-400 absolute -bottom-0.5 -right-0.5"
+              title="Testnet"
+              >T</span
+            >
+          }
+        </button>
+        <!-- 
+      <select
+        hidden
+        [ngModel]="selectedChainId()"
+        (ngModelChange)="switchChainM.switchChain({ chainId: selectedChainId()! })">
+        @for (chain of chains(); track chain.id) {
+          <option [value]="chain.id">
+            {{ chain.name }}
+          </option>
+        }
+      </select> -->
+      </button>
+
+      <dialog #accountModal class="bg-transparent" (close)="modalOpenning.set(false)" open="">
+        <app-modal-content title="Account" class="flex flex-col justify-center items-center p-4">
+          @if (ensNameQ.data(); as ensName) {
+            <strong class="text-base mt-1"> {{ ensName }} </strong>
+          }
+          @if (ensAvatarQ.data(); as ensAvatar) {
+            <img
+              [src]="ensAvatar"
+              class="w-16 h-16 rounded-full mt-1 border-2 border-primary-shade border-opacity-40" />
+          } @else {
+            <span
+              class="inline-flex justify-center items-center border-2 border-primary-shade border-opacity-40 w-16 h-16 text-4xl rounded-full shrink-0"
+              [style.backgroundColor]="avatar.color + '90'">
+              {{ avatar.emoji }}
+            </span>
+          }
+          <strong class="text-base mt-1"> {{ address | call: shortenAddress }} </strong>
+          <p class="text-xs text-background/70">{{ balanceStr() }}</p>
+
+          <footer class="flex justify-between gap-2 mt-3 w-full">
+            @for (action of actions; track action.label) {
+              <button
+                class="btn outlined flex flex-col items-center gap-1 pt-2.5 text-sm w-1/2"
+                (click)="action.onClick()">
+                <lucide-icon [img]="action.icon" size="20" />
+                {{ action.label }}
+              </button>
+            }
+          </footer>
+        </app-modal-content>
+      </dialog>
+    }
+  }
+} @else {
+  <button class="btn primary" (click)="showConnectModal()">
+    {{ modalOpenning() ? 'Connecting...' : 'Connect Wallet' }}
+  </button>
+}
+
+<dialog #connectModal class="bg-transparent" (close)="modalOpenning.set(false)">
+  <app-modal-content title="Connect Wallet">
+    <app-connect-wallet-modal />
+  </app-modal-content>
+</dialog>

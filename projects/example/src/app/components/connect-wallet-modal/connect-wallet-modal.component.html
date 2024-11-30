@@ -1,0 +1,45 @@
+@if (connectingConnector(); as connector) {
+  <div class="mt-4 text-center py-4">
+    <img
+      [src]="icons()[connector.rkDetails.id]"
+      [alt]="connector.name"
+      width="44"
+      height="44"
+      class="rounded-md mx-auto mb-3" />
+    <h4 class="text-background text-lg font-semibold">Opening {{ connector.rkDetails.name }}...</h4>
+    <p class="text-background/80 -mt-1">Confirm connection in the extension</p>
+    <footer class="flex flex-col gap-1 max-w-60 mx-auto mt-3">
+      <button class="btn primary" (click)="connect(connector)">Retry</button>
+      <button class="btn link" (click)="connectingConnector.set(null)">Back</button>
+    </footer>
+  </div>
+} @else {
+  <ol class="mt-2">
+    @for (group of connectorGroups(); track group.groupName) {
+      <li>
+        <ul>
+          <h4 class="mt-2 mb-1 text-background/80">
+            <strong>{{ group.groupName }}</strong>
+          </h4>
+          @for (connector of group.connectors; track connector.id) {
+            @if (connector.rkDetails) {
+              <li>
+                <button
+                  (click)="connect(connector)"
+                  class="flex items-center gap-2 -mx-1 p-1.5 rounded-base hover:bg-background/10 w-full transition hover:scale-105 hover:px-2 active:scale-95">
+                  <img
+                    [src]="icons()[connector.rkDetails.id]"
+                    [alt]="connector.name"
+                    width="32"
+                    height="32"
+                    class="rounded-md" />
+                  <strong class="text-lg">{{ connector.rkDetails.name }}</strong>
+                </button>
+              </li>
+            }
+          }
+        </ul>
+      </li>
+    }
+  </ol>
+}

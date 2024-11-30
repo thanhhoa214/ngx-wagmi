@@ -1,8 +1,6 @@
 import { effect, signal } from '@angular/core';
-
 import { type Config, getChains, type GetChainsReturnType } from '@wagmi/core';
 import { watchChains } from '@wagmi/core/internal';
-
 import { injectConfig } from './config';
 
 export type InjectChainsReturnType<config extends Config = Config> = GetChainsReturnType<config>;
