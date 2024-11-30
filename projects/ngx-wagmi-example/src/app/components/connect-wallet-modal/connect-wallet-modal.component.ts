@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, signal, Signal } 
 import type { WalletDetailsParams } from '@rainbow-me/rainbowkit';
 import { Connector } from '@wagmi/core';
 import { LucideAngularModule, X } from 'lucide-angular';
-import { injectConnectors } from 'ngx-wagmi';
+import { injectAccount, injectConfig, injectConnect, injectConnectors } from 'ngx-wagmi';
 
 type RkConnector<T extends boolean = false> = T extends true
   ? Connector & WalletDetailsParams
@@ -17,9 +17,13 @@ type RkConnectors = Array<RkConnector>;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConnectWalletModalComponent {
-  readonly xIcon = X;
+  readonly lucideIcons = { X };
 
   rawConnectors = injectConnectors() as Signal<RkConnectors>;
+  account = injectAccount();
+  config = injectConfig();
+  connectM = injectConnect();
+
   icons = signal({} as Record<string, string>);
   connectingConnector = signal<RkConnector<true> | null>(null);
 
@@ -82,7 +86,8 @@ export class ConnectWalletModalComponent {
   async connect(connector: RkConnector<true>) {
     this.connectingConnector.set(connector);
     await connector.disconnect();
-    await connector.connect();
-    console.log('logggg connected');
+    // connector.connect() won't trigger watchAccount for unknown reason
+    await this.connectM.connectAsync({ connector });
+    this.connectingConnector.set(null);
   }
 }

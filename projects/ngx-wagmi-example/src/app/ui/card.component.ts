@@ -10,18 +10,18 @@ import { JsonBigIntPipe } from './jsonBigInt.pipe';
   template: `
     <section>
       <header>
-        <h3>{{ title() }}</h3>
+        <h3 class="font-bold text-lg">{{ title() }}</h3>
         <div>
           @for (status of statuses; track status) {
-            <small class="loading">{{ status }}: {{ query()[status]() ? '✅' : '❌' }}</small>
+            <small>{{ status }}: {{ query()[status]() ? '✅' : '❌' }}</small>
           }
         </div>
       </header>
       <pre>
-<code [highlight]="query().data() | jsonbi" language="json" ></code>
+<code  [highlight]="query().data() | jsonbi" language="json" class="bg-slate-200"></code>
 </pre>
       @if (query().error()?.message) {
-        <p>Error: {{ query().error()?.message }}</p>
+        <p class="to-red-600">Error: {{ query().error()?.message }}</p>
       }
       <footer>
         <ng-content />
@@ -30,9 +30,6 @@ import { JsonBigIntPipe } from './jsonBigInt.pipe';
   `,
   styles: [
     `
-      h3 {
-        margin: 0;
-      }
       header {
         display: flex;
         justify-content: space-between;
@@ -41,17 +38,10 @@ import { JsonBigIntPipe } from './jsonBigInt.pipe';
       small {
         margin-right: 1rem;
       }
-      .loading {
-        color: blue;
-      }
       code {
         max-height: 20vh;
-        background-color: #f4f4f4;
         border-radius: 0.5rem;
         padding: 1rem;
-      }
-      p {
-        color: red;
       }
     `,
   ],

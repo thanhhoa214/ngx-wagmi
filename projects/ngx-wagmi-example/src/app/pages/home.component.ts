@@ -59,7 +59,7 @@ import { CardComponent } from '../ui/card.component';
 @Component({
   standalone: true,
   imports: [CardComponent],
-  template: `<div>
+  template: `<div class="bg-slate-50 text-slate-800 p-4">
     <p class="space-x-2">
       Chain: {{ account().chain?.name }} ({{ chainId() }})
       <br />

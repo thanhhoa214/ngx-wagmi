@@ -1,11 +1,12 @@
-<div class="bg-foreground border py-4 px-6 rounded-xl min-w-80 relative">
+<div class="bg-foreground/80 backdrop-blur-sm border py-4 px-6 rounded-xl min-w-80 relative">
   <h3 class="text-lg font-bold text-primary-foreground">Connect Wallet</h3>
   <form method="dialog" class="absolute top-4 right-4 z-10">
     <!-- if there is a button in form, it will close the modal -->
     <button class="transition-transform hover:scale-105 active:scale-95">
-      <lucide-icon [img]="xIcon" />
+      <lucide-icon [img]="lucideIcons.X" />
     </button>
   </form>
+
   @if (connectingConnector(); as connector) {
     <div class="mt-4 text-center py-4">
       <img
@@ -18,7 +19,7 @@
       <p class="text-background/80 -mt-1">Confirm connection in the extension</p>
       <footer class="flex flex-col gap-1 max-w-60 mx-auto mt-3">
         <button class="btn primary" (click)="connect(connector)">Retry</button>
-        <button class="btn outlined" (click)="connectingConnector.set(null)">Back</button>
+        <button class="btn link" (click)="connectingConnector.set(null)">Back</button>
       </footer>
     </div>
   } @else {

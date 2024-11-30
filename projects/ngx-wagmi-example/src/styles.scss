@@ -69,6 +69,9 @@
     @apply bg-primary/90 text-primary-foreground hover:bg-primary;
   }
   .btn.outlined {
-    @apply border-primary-shade text-primary-shade hover:bg-primary-shade/10;
+    @apply text-primary-shade hover:bg-primary-shade/10;
+  }
+  .btn.link {
+    @apply text-primary-shade hover:underline hover:underline-offset-2;
   }
 }

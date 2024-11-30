@@ -3,7 +3,11 @@ import { ConnectButtonComponent } from '../components/connect-button/connect-but
 
 @Component({
   standalone: true,
-  template: `<app-connect-button />`,
+  template: `
+    <div class="p-4">
+      <app-connect-button />
+    </div>
+  `,
   imports: [ConnectButtonComponent],
 })
 export default class SeedkitPage {}

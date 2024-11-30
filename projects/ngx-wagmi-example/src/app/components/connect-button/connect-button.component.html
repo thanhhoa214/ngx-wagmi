@@ -1,4 +1,17 @@
-<button class="btn primary" (click)="showModal()">{{ modalOpenning() ? 'Connecting...' : 'Connect Wallet' }}</button>
+@if (account().address; as address) {
+  <button class="btn primary inline-flex gap-1">
+    <span class="border rounded-full bg">
+      {{ address | call: emojiAvatarForAddress }}
+    </span>
+    <strong class="text-base"> {{ address | call: shortenAddress }} </strong>
+  </button>
+} @else {
+  <button class="btn primary" (click)="showModal()">{{ modalOpenning() ? 'Connecting...' : 'Connect Wallet' }}</button>
+}
+
+<dialog #accountModal class="bg-transparent" (close)="modalOpenning.set(false)">
+  <div></div>
+</dialog>
 
 <dialog #modal class="bg-transparent" (close)="modalOpenning.set(false)">
   <app-connect-wallet-modal />
