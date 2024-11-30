@@ -1,0 +1,5 @@
+<button class="btn primary" (click)="showModal()">{{ modalOpenning() ? 'Connecting...' : 'Connect Wallet' }}</button>
+
+<dialog #modal class="bg-transparent" (close)="modalOpenning.set(false)">
+  <app-connect-wallet-modal />
+</dialog>
