@@ -1,0 +1,19 @@
+<dialog #modal (close)="close.emit()" [open]="modalOpening()">
+  @if (modalOpening()) {
+    <div
+      [class]="tm('bg-foreground/80 backdrop-blur-sm border py-4 px-6 rounded-xl min-w-80 relative', contentClass())"
+      (clickOutside)="closeOnBackdropClick() && hide()">
+      <header class="w-full flex justify-between items-center gap-2 mb-2">
+        <h3 class="text-lg font-bold text-primary-foreground">{{ title() }}</h3>
+        <form method="dialog" class="inline-flex">
+          <!-- if there is a button in form, it will close the modal -->
+          <button class="transition-transform hover:scale-105 active:scale-95">
+            <lucide-icon [img]="xIcon" />
+          </button>
+        </form>
+      </header>
+
+      <ng-content />
+    </div>
+  }
+</dialog>

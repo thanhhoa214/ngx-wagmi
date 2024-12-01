@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Check, CheckSquare, ChevronsUpDown, Copy, LogOut, LucideAngularModule } from 'lucide-angular';
 import {
@@ -15,7 +15,7 @@ import { formatUnits } from 'viem';
 import { injectFlash } from '../../injections/flash';
 import { CallPipe } from '../../pipes/call.pipe';
 import { ConnectWalletModalComponent } from '../connect-wallet-modal/connect-wallet-modal.component';
-import { ModalContentComponent } from '../modal-content/modal-content.component';
+import { ModalComponent } from '../modal-content/modal.component';
 import { emojiAvatarForAddress } from './emojiAvatarForAddress';
 import { provideRainbowKitChains, RainbowKitChain } from './provideRainbowKitChains';
 
@@ -25,15 +25,8 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 @Component({
   selector: 'app-connect-button',
   standalone: true,
-  imports: [LucideAngularModule, ConnectWalletModalComponent, CallPipe, ModalContentComponent, FormsModule],
+  imports: [LucideAngularModule, ConnectWalletModalComponent, CallPipe, ModalComponent, FormsModule],
   templateUrl: './connect-button.component.html',
-  styles: [
-    `
-      dialog::backdrop {
-        @apply fixed inset-0 bg-black bg-opacity-50;
-      }
-    `,
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConnectButtonComponent {
@@ -63,8 +56,8 @@ export class ConnectButtonComponent {
   currentChain = computed(() => this.rkChains().find((c) => this.isSameChain(c, this.account().chainId)));
   copyFlashing = injectFlash();
 
-  connectModal = viewChild<string, ElementRef<HTMLDialogElement>>('connectModal', { read: ElementRef });
-  accountModal = viewChild<string, ElementRef<HTMLDialogElement>>('accountModal', { read: ElementRef });
+  connectModal = viewChild<string, ModalComponent>('connectModal', { read: ModalComponent });
+  accountModal = viewChild<string, ModalComponent>('accountModal', { read: ModalComponent });
   modalOpenning = signal(false);
   chainDropdownOpenning = signal(false);
 
@@ -84,36 +77,18 @@ export class ConnectButtonComponent {
       label: 'Disconnect',
       onClick: async () => {
         await this.disconnectM.disconnectAsync();
-        await delay(500);
         this.modalOpenning.set(false);
       },
     },
   ];
 
   constructor() {
-    effect(() => {
-      console.log(this.rkChains(), this.account().chainId);
-    });
-
     effect(
       () => {
-        if (this.account().isConnected) {
-          this.modalOpenning.set(false);
-          this.connectModal()?.nativeElement.close();
-        }
+        if (this.account().isConnected) this.connectModal()?.hide();
       },
       { allowSignalWrites: true },
     );
-  }
-
-  showConnectModal() {
-    this.modalOpenning.set(true);
-    this.connectModal()?.nativeElement.showModal();
-  }
-
-  showAccountModal() {
-    this.modalOpenning.set(true);
-    this.accountModal()?.nativeElement.showModal();
   }
 
   switchChain(chainId: number) {
