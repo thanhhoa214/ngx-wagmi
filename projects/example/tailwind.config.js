@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./projects/ngx-wagmi-example/src/**/*.{html,ts}'],
+  content: ['./projects/example/src/**/*.{html,ts}'],
   theme: {
     extend: {
       colors: {

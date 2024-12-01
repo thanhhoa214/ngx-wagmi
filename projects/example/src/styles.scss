@@ -77,4 +77,11 @@
   .btn.link {
     @apply text-primary-shade hover:underline hover:underline-offset-2;
   }
+
+  dialog {
+    @apply rounded-base shadow-sm;
+  }
+  dialog::backdrop {
+    @apply backdrop:bg-background/50 backdrop:backdrop-blur-sm;
+  }
 }
