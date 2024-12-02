@@ -86,7 +86,7 @@
                 "input": "projects/example/public"
               }
             ],
-            "styles": ["projects/example/src/styles.scss"],
+            "styles": ["projects/example/src/styles.scss", "node_modules/ngx-seedkit/styles/index.css"],
             "scripts": []
           },
           "configurations": {
