@@ -21,7 +21,6 @@ export class ConnectButtonComponent {
   readonly shortenAddress = (address: string) => address.slice(0, 6) + '...' + address.slice(-4);
 
   account = injectAccount();
-
   avatar = computed(() => this.account().address && this.emojiAvatarForAddress(this.account().address!));
   currentChain = computed(() => {
     const wagmiChain = this.account().chain;

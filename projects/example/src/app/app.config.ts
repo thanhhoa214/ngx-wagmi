@@ -15,9 +15,9 @@ import { provideTanStackQuery, QueryClient, withDevtools } from '@tanstack/angul
 import { createConfig, http } from '@wagmi/core';
 import { arbitrumSepolia, baseSepolia, mainnet } from '@wagmi/core/chains';
 import { provideHighlightOptions } from 'ngx-highlightjs';
+import { provideSeedkitConfig } from 'ngx-seedkit';
 import { provideWagmiConfig } from 'ngx-wagmi';
 import { routes } from './app.routes';
-import { provideSeedkitConfig } from './injections/seedkitConfig';
 
 const connectors = connectorsForWallets(
   [

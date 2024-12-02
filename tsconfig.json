@@ -10,7 +10,6 @@
     "skipLibCheck": true,
     "paths": {
       "example": ["./dist/example"],
-      "ngx-wagmi": ["./dist/ngx-wagmi"],
       "ngx-seedkit": ["./dist/ngx-seedkit"]
     },
     "esModuleInterop": true,
