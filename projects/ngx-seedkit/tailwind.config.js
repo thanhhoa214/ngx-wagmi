@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./projects/seedkit/src/**/*.{html,ts}'],
+  content: ['./projects/ngx-seedkit/src/**/*.{html,ts}'],
   theme: {
     extend: {
       colors: {

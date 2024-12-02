@@ -15,10 +15,10 @@ import { ClickOutside } from 'ngxtension/click-outside';
 import { formatUnits } from 'viem';
 import { injectFlash } from '../../injections/flash';
 import { CallPipe } from '../../pipes/call.pipe';
+import { LucideIconData } from '../../types/lucide-angular';
 import { emojiAvatarForAddress } from '../connect-button/emojiAvatarForAddress';
 import { provideRainbowKitChains, RainbowKitChain } from '../connect-button/provideRainbowKitChains';
 import { ModalComponent } from '../modal/modal.component';
-import { LucideIconData } from './../../types/lucide-angular.d';
 
 const formatNumber = new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 });
 export function isSameChain(chain: RainbowKitChain, targetChainId?: number) {
