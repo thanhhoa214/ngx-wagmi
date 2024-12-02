@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build example",
     "watch": "ng build --watch --configuration development",
     "wagmi:watch": "ng build ngx-wagmi --watch --configuration development",
     "wagmi:build": "ng build ngx-wagmi",
