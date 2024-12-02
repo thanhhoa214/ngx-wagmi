@@ -18,7 +18,7 @@ import { JsonBigIntPipe } from './jsonBigInt.pipe';
         </div>
       </header>
       <pre>
-<code  [highlight]="query().data() | jsonbi" language="json" class="bg-slate-200"></code>
+<code  [highlight]="query().data() | jsonbi" language="json" class="border border-foreground bg-background text-sm"></code>
 </pre>
       @if (query().error()?.message) {
         <p class="to-red-600">Error: {{ query().error()?.message }}</p>

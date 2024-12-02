@@ -8,11 +8,11 @@
     "watch": "ng build --watch --configuration development",
     "wagmi:watch": "ng build ngx-wagmi --watch --configuration development",
     "wagmi:build": "ng build ngx-wagmi",
-    "wagmi:publish": "ng build ngx-wagmi && cd dist/ngx-wagmi && npm publish",
+    "wagmi:publish": "cd projects/ngx-wagmi && npm version patch && cd ../../ && ng build ngx-wagmi && cd dist/ngx-wagmi && npm publish",
     "seedkit:watch": "ng build ngx-seedkit --watch --configuration development",
     "seedkit:build-tailwind": "tailwindcss -c projects/ngx-seedkit/tailwind.config.js -i ./projects/ngx-seedkit/src/styles/index.scss -o ./projects/ngx-seedkit/src/styles/index.css -m",
     "seedkit:build": "npm run seedkit:build-tailwind && ng build ngx-seedkit",
-    "seedkit:publish": "npm run seedkit:build && cd dist/ngx-seedkit && npm publish",
+    "seedkit:publish": "cd projects/ngx-seedkit && npm version patch && cd ../../ && npm run seedkit:build && cd dist/ngx-seedkit && npm publish",
     "test": "ng test",
     "serve:ssr:ngx-wagmi-example": "node dist/ngx-wagmi-example/server/server.mjs"
   },

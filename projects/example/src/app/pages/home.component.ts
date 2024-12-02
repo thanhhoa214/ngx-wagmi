@@ -1,6 +1,5 @@
 import { Component, computed, signal } from '@angular/core';
-
-import { injected } from '@wagmi/core';
+import { ConnectButtonComponent } from 'ngx-seedkit';
 import {
   injectAccount,
   injectAccountEffect,
@@ -58,26 +57,19 @@ import { CardComponent } from '../ui/card.component';
 
 @Component({
   standalone: true,
-  imports: [CardComponent],
-  template: `<div class="bg-slate-50 text-slate-800 p-4">
+  imports: [CardComponent, ConnectButtonComponent],
+  template: `<div class="p-4">
     <p class="space-x-2">
-      Chain: {{ account().chain?.name }} ({{ chainId() }})
-      <br />
-
-      @if (account().isConnected) {
-        <button (click)="disconnectM.disconnect()">Disconnect</button>
-        Account: {{ account().address }}
-      } @else {
-        <button (click)="connectM.connect({ connector: injectedConnector })">Connect</button>
-      }
+      <app-connect-button />
     </p>
 
-    <p class="space-x-2">
+    <p class="space-x-2 ">
       <strong>Connections</strong>
       @for (item of connections(); track item.connector.id) {
-        <button (click)="switchAccountM.switchAccount({ connector: item.connector })">
+        <button (click)="switchAccountM.switchAccount({ connector: item.connector })" class="btn secondary">
           Switch account from "{{ item.connector.name }}" ({{ item.connector.id }})
         </button>
+        <br />
         Account's addresses connected:
         <ul>
           @for (accAddress of item.accounts; track accAddress) {
@@ -90,14 +82,16 @@ import { CardComponent } from '../ui/card.component';
     <p class="space-x-2">
       <strong>Connectors</strong>
       @for (item of connectors(); track item.id) {
-        <button (click)="item.connect()">Connect to {{ item.id }}</button>
+        <button (click)="item.connect()" class="btn secondary">Connect to {{ item.id }}</button>
       }
     </p>
 
     <p class="space-x-2">
       <strong>Switch Chain</strong>
       @for (item of chains(); track item.id) {
-        <button (click)="switchChainM.switchChain({ chainId: item.id })">Switch to {{ item.name }}</button>
+        <button (click)="switchChainM.switchChain({ chainId: item.id })" class="btn secondary">
+          Switch to {{ item.name }}
+        </button>
       }
     </p>
 
@@ -112,7 +106,8 @@ import { CardComponent } from '../ui/card.component';
               decimals: 6,
             },
           })
-        ">
+        "
+        class="btn secondary">
         Add USDT to wallet for watching (watchAsset)
       </button>
       {{ watchAssetM.isPending() ? 'Pending...' : '' }}
@@ -120,24 +115,24 @@ import { CardComponent } from '../ui/card.component';
     </p>
 
     <p class="error">
-      <button (click)="sendTx()">Send transaction</button>
+      <button (click)="sendTx()" class="btn secondary">Send transaction</button>
       {{ sendTxM.isPending() ? 'Pending...' : '' }}
       {{ sendTxM.error()?.message }}
     </p>
 
     <p class="error">
-      <button (click)="signMessage()">Sign message</button>
+      <button (click)="signMessage()" class="btn secondary">Sign message</button>
       {{ signMessageM.isPending() ? 'Pending...' : '' }}
       {{ signMessageM.error()?.message }}
     </p>
 
     <p class="error">
-      <button (click)="signTypedData()">Sign typed data</button>
+      <button (click)="signTypedData()" class="btn secondary">Sign typed data</button>
       {{ signTypedDataM.isPending() ? 'Pending...' : '' }}
       {{ signTypedDataM.error()?.message }}
     </p>
     <p class="error">
-      <button (click)="writeContract()">Write contract</button>
+      <button (click)="writeContract()" class="btn secondary">Write contract</button>
       {{ writeContractM.isPending() ? 'Pending...' : '' }}
       {{ writeContractM.error()?.message }}
     </p>
@@ -172,14 +167,20 @@ import { CardComponent } from '../ui/card.component';
     <app-card title="verifyTypedDataQ" [query]="verifyTypedDataQ" />
     <app-card title="walletClientQ" [query]="walletClientQ" />
   </div>`,
-  styles: [``],
+  styles: [
+    `
+      .btn.secondary {
+        color: #ababab;
+        text-decoration: underline;
+      }
+    `,
+  ],
 })
 export default class HomePage {
   // Testing constants
   readonly vitalik = signal({ address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045' } as const);
   readonly usdtEthAddress = signal<Address>('0xdac17f958d2ee523a2206206994597c13d831ec7');
   readonly txHash = signal<Address>('0x0fa64daeae54e207aa98613e308c2ba8abfe274f75507e741508cc4db82c8cb5');
-  readonly injectedConnector = injected();
 
   // Only injection
   config = injectConfig();
