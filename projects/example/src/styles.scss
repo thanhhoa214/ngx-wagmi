@@ -79,9 +79,7 @@
   }
 
   dialog {
-    @apply rounded-base shadow-sm;
-  }
-  dialog::backdrop {
-    @apply backdrop:bg-background/50 backdrop:backdrop-blur-sm;
+    @apply rounded-base shadow-sm
+           backdrop:bg-background/50 backdrop:backdrop-blur-sm;
   }
 }

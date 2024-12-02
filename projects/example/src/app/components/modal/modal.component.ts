@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, input, model, viewChild } from '@angular/core';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { ClickOutside } from 'ngxtension/click-outside';
 import { twMerge } from 'tailwind-merge';
@@ -19,16 +19,15 @@ export class ModalComponent {
   closeOnBackdropClick = input<boolean>(true);
   modalOpening = model<boolean>(false);
 
-  open = output<void>();
-  close = output<void>();
+  modal = viewChild.required<ElementRef<HTMLDialogElement>>('modal');
 
   show() {
     this.modalOpening.set(true);
-    this.open.emit();
+    this.modal().nativeElement.showModal();
   }
 
   hide() {
     this.modalOpening.set(false);
-    this.close.emit();
+    this.modal().nativeElement.close();
   }
 }
