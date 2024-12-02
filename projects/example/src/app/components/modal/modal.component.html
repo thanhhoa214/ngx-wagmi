@@ -1,4 +1,4 @@
-<dialog #modal (close)="close.emit()" [open]="modalOpening()">
+<dialog #modal (close)="hide()" [open]="modalOpening()">
   @if (modalOpening()) {
     <div
       [class]="tm('bg-foreground/80 backdrop-blur-sm border py-4 px-6 rounded-xl min-w-80 relative', contentClass())"

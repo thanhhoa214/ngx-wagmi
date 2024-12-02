@@ -25,7 +25,7 @@
       <app-modal
         #accountModal
         [(modalOpening)]="modalOpenning"
-        title="Account"
+        modalTitle="Account"
         contentClass="flex flex-col justify-center items-center p-4">
         @if (ensNameQ.data(); as ensName) {
           <strong class="text-base mt-1"> {{ ensName }} </strong>
@@ -109,8 +109,6 @@
   <button class="btn primary" (click)="connectModal.show()">
     {{ modalOpenning() ? 'Connecting...' : 'Connect Wallet' }}
   </button>
-}
 
-<app-modal title="Connect Wallet" #connectModal (close)="modalOpenning.set(false)">
-  <app-connect-wallet-modal />
-</app-modal>
+  <app-connect-modal #connectModal [(modalOpening)]="modalOpenning" />
+}

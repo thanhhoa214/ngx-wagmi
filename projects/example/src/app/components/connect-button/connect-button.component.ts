@@ -14,13 +14,12 @@ import {
 import { formatUnits } from 'viem';
 import { injectFlash } from '../../injections/flash';
 import { CallPipe } from '../../pipes/call.pipe';
-import { ConnectWalletModalComponent } from '../connect-wallet-modal/connect-wallet-modal.component';
-import { ModalComponent } from '../modal-content/modal.component';
+import { ConnectWalletModalComponent } from '../connect-modal/connect-modal.component';
+import { ModalComponent } from '../modal/modal.component';
 import { emojiAvatarForAddress } from './emojiAvatarForAddress';
 import { provideRainbowKitChains, RainbowKitChain } from './provideRainbowKitChains';
 
 const formatNumber = new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 });
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 @Component({
   selector: 'app-connect-button',

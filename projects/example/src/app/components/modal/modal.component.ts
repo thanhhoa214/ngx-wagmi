@@ -14,7 +14,7 @@ export class ModalComponent {
   readonly xIcon = X;
   readonly tm = twMerge;
 
-  title = input.required();
+  title = input.required({ alias: 'modalTitle' });
   contentClass = input<string>();
   closeOnBackdropClick = input<boolean>(true);
   modalOpening = model<boolean>(false);
@@ -24,13 +24,10 @@ export class ModalComponent {
 
   show() {
     this.modalOpening.set(true);
-    console.log('show', this.modalOpening());
     this.open.emit();
   }
 
   hide() {
-    console.log('hide', this.modalOpening());
-
     this.modalOpening.set(false);
     this.close.emit();
   }
