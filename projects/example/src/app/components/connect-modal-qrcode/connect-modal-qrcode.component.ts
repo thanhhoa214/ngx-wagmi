@@ -14,6 +14,9 @@ export const WALLET_CONNECT_CONNECTOR_ID = 'walletConnect';
   host: { class: 'block' },
 })
 export class ConnectModalQrcodeComponent {
+  placeholderUri =
+    'wc:c50309d92264017e73cef008e5428ef4dcfe49340a75725b90d02471d4bbbf77@2?expiryTimestamp=110000000&relay-protocol=irn&symKey=d8e95356e5773bb05170ff71523921509dd26e09509eba10c61b4b86bfa7bb9a';
+
   connector = input.required<WalletConnector>();
   qrcodeUri = derivedAsync(() => this.connector().getQrCodeUri?.());
   logoUrl = derivedAsync(() => getConnectorIconUrl(this.connector()));

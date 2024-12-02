@@ -78,9 +78,7 @@ export function injectWalletConnectors(
           // @ts-expect-error - Web3Modal v2 error message on desktop
           err.message === 'Connection request reset. Please try again.';
 
-        if (!isUserRejection) {
-          throw err;
-        }
+        if (!isUserRejection) throw err;
       }
     }
 

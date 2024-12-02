@@ -1,9 +1,10 @@
 <app-modal #connectModal [modalTitle]="title()" [(modalOpening)]="modalOpening">
   @if (connectingConnector(); as connector) {
-    <div class="mt-2 text-center py-4">
-      @if (connector.type === WALLET_CONNECT_CONNECTOR_ID) {
-        <app-connect-modal-qrcode [connector]="connector" />
-      } @else {
+    @if (connector.type === WALLET_CONNECT_CONNECTOR_ID) {
+      <app-connect-modal-qrcode [connector]="connector" class="mt-4" />
+      <button class="btn link block mx-auto" (click)="connectingConnector.set(null)">Back</button>
+    } @else {
+      <div class="mt-2 text-center py-4">
         <img
           [src]="icons()[connector.id]"
           [alt]="connector.name"
@@ -16,8 +17,8 @@
           <button class="btn primary" (click)="connect(connector)">Retry</button>
           <button class="btn link" (click)="connectingConnector.set(null)">Back</button>
         </footer>
-      }
-    </div>
+      </div>
+    }
   } @else {
     <ol class="w-full">
       @for (group of connectorGroups() | keyvalue; track group.key) {

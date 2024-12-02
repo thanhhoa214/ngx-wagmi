@@ -90,7 +90,7 @@ export class QRCodeComponent {
   readonly logoUrl = input<string>();
   readonly sizeProp = input(280);
 
-  private padding = signal<number>(15);
+  private padding = signal<number>(10);
 
   size = computed(() => this.sizeProp() - this.padding() * 2);
   logoWrapperSize = computed(() => this.logoSize() + this.logoMargin() * 2);

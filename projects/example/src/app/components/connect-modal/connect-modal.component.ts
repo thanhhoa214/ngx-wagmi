@@ -70,11 +70,15 @@ export class ConnectWalletModalComponent {
     effect(
       () => {
         const connector = this.connectingConnector();
-        if (connector) this.title.set(`Scan with ${connector.name}`);
+        if (connector?.type === WALLET_CONNECT_CONNECTOR_ID) this.title.set(`Scan with ${connector.name}`);
         else this.title.set('Connect Wallet');
       },
       { allowSignalWrites: true },
     );
+
+    effect(() => {
+      if (!!this.connectM.data()) this.connectingConnector.set(null);
+    });
   }
 
   show() {
@@ -84,10 +88,6 @@ export class ConnectWalletModalComponent {
   async connect(connector: WalletConnector) {
     this.connectingConnector.set(connector);
     if (connector.type === WALLET_CONNECT_CONNECTOR_ID) return;
-
-    await connector.disconnect();
-    // connector.connect() won't trigger watchAccount for unknown reason
-    await this.connectM.connectAsync({ connector });
-    this.connectingConnector.set(null);
+    await connector.connect();
   }
 }

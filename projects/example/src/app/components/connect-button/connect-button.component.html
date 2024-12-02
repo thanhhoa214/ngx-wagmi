@@ -1,114 +1,30 @@
 @if (account().isConnected) {
-  @if (account().address; as address) {
+  <button class="btn primary inline-flex items-center gap-2 pl-2 pr-2" (click)="accountModal.show()">
     @if (avatar(); as avatar) {
-      <button class="btn primary inline-flex items-center gap-2 pl-2 pr-2" (click)="accountModal.show()">
-        <span
-          class="inline-flex justify-center items-center border w-6 h-6 rounded-full shrink-0"
-          [style.backgroundColor]="avatar.color + '90'">
-          {{ avatar.emoji }}
-        </span>
-        <strong class="text-base"> {{ address | call: shortenAddress }} </strong>
-        <div class="w-px h-6 bg-background/50"></div>
-        <button [title]="currentChain()?.name" class="relative -ml-1 p-0.5">
-          <img src="/chainIcons{{ currentChain()?.iconUrl }}" class="w-6 h-6 rounded-full" />
+      <span
+        class="inline-flex justify-center items-center border w-6 h-6 rounded-full shrink-0"
+        [style.backgroundColor]="avatar.color + '90'">
+        {{ avatar.emoji }}
+      </span>
+      <strong class="text-base"> {{ account().address! | call: shortenAddress }} </strong>
+      <div class="w-px h-6 bg-background/50"></div>
+      <button [title]="currentChain()?.name" class="relative -ml-1 p-0.5">
+        <img src="/chainIcons{{ currentChain()?.iconUrl }}" class="w-6 h-6 rounded-full" />
 
-          @if (currentChain()?.testnet) {
-            <span
-              class="rounded-full inline-flex justify-center items-center w-3 h-3 text-[8px] font-bold bg-red-400 absolute bottom-0 right-0"
-              title="Testnet"
-              >T</span
-            >
-          }
-        </button>
-      </button>
-
-      <app-modal
-        #accountModal
-        [(modalOpening)]="modalOpenning"
-        modalTitle="Account"
-        contentClass="flex flex-col justify-center items-center p-4">
-        @if (ensNameQ.data(); as ensName) {
-          <strong class="text-base mt-1"> {{ ensName }} </strong>
-        }
-        @if (ensAvatarQ.data(); as ensAvatar) {
-          <img [src]="ensAvatar" class="w-16 h-16 rounded-full mt-1 border-2 border-primary-shade border-opacity-40" />
-        } @else {
+        @if (currentChain()?.testnet) {
           <span
-            class="inline-flex justify-center items-center border-2 border-primary-shade border-opacity-40 w-16 h-16 text-4xl rounded-full shrink-0"
-            [style.backgroundColor]="avatar.color + '90'">
-            {{ avatar.emoji }}
-          </span>
+            class="rounded-full inline-flex justify-center items-center w-3 h-3 text-[8px] font-bold bg-red-400 absolute bottom-0 right-0"
+            title="Testnet"
+            >T</span
+          >
         }
-        <strong class="text-base mt-1"> {{ address | call: shortenAddress }} </strong>
-        <p class="text-xs text-background/70">{{ balanceStr() }}</p>
-
-        <div class="relative">
-          <button
-            [title]="currentChain()?.name"
-            class="btn secondary inline-flex items-center gap-1.5 my-1 px-2 py-1 rounded-md hover:bg-primary-shade/10"
-            (click)="chainDropdownOpenning.set(!chainDropdownOpenning())">
-            <span class="relative">
-              <img src="/chainIcons{{ currentChain()?.iconUrl }}" class="w-6 h-6 rounded-full" />
-              @if (currentChain()?.testnet) {
-                <span
-                  class="rounded-full inline-flex justify-center items-center w-3 h-3 text-[8px] font-bold bg-red-400 absolute -bottom-0.5 -right-0.5"
-                  title="Testnet"
-                  >T</span
-                >
-              }
-            </span>
-            <strong>{{ currentChain()?.name }}</strong>
-            <lucide-icon [img]="ICONS.ChevronsUpDown" size="16" />
-          </button>
-
-          <ul
-            [hidden]="!chainDropdownOpenning()"
-            class="absolute bottom-0 right-0 w-48 max-w-52 bg-white/90 backdrop-blur-sm rounded-base py-1 overflow-hidden">
-            @for (chain of rkChains(); track chain.id) {
-              <li class="flex">
-                <button
-                  class="btn secondary inline-flex items-center gap-1.5 px-2 py-1 rounded-md w-full hover:bg-primary-shade/10 text-sm text-left leading-4"
-                  (click)="switchChain(chain.id)">
-                  <span class="relative shrink-0">
-                    <img src="/chainIcons{{ chain.iconUrl }}" class="w-6 h-6 rounded-full" />
-                    @if (chain.testnet) {
-                      <span
-                        class="rounded-full inline-flex justify-center items-center w-3 h-3 text-[8px] font-bold bg-red-400 absolute -bottom-0.5 -right-0.5"
-                        title="Testnet"
-                        >T</span
-                      >
-                    }
-                  </span>
-                  <strong>{{ chain.name }}</strong>
-                  @if (isSameChain(chain, account().chainId)) {
-                    <lucide-icon [img]="ICONS.Check" size="16" strokeWidth="3" class="ml-auto text-primary-shade" />
-                  }
-                </button>
-              </li>
-            }
-          </ul>
-        </div>
-
-        <footer class="flex justify-between gap-2 mt-3 w-full">
-          @for (action of actions; track action.label) {
-            <button
-              class="btn outlined flex flex-col items-center gap-1 pt-2.5 text-sm w-1/2"
-              (click)="action.onClick()">
-              <!-- Handle copied status for Copy button -->
-              <lucide-icon
-                [img]="copyFlashing.flashing() && action.icon === ICONS.Copy ? ICONS.CheckSquare : action.icon"
-                size="20" />
-              {{ action.label }}
-            </button>
-          }
-        </footer>
-      </app-modal>
+      </button>
     }
-  }
+  </button>
+  <app-account-modal #accountModal [(modalOpening)]="modalOpenning" />
 } @else {
+  <app-connect-modal #connectModal [(modalOpening)]="modalOpenning" />
   <button class="btn primary" (click)="connectModal.show()">
     {{ modalOpenning() ? 'Connecting...' : 'Connect Wallet' }}
   </button>
-
-  <app-connect-modal #connectModal [(modalOpening)]="modalOpenning" />
 }

@@ -1,8 +1,11 @@
-@if (qrcodeUri(); as uri) {
-  <app-qrcode [uri]="uri" [logoUrl]="logoUrl()" [logoBackground]="connector().iconBackground" />
-}
-<footer class="flex justify-between items-center mt-2 text-sm">
-  <p>Don't have Trust Wallet?</p>
+<app-qrcode
+  [uri]="qrcodeUri() || placeholderUri"
+  [logoUrl]="logoUrl()"
+  [logoBackground]="connector().iconBackground"
+  [class.blur-sm]="!qrcodeUri()" />
+
+<footer class="flex justify-between items-center mt-4 text-sm">
+  <p class="font-semibold text-primary-shade/90">Don't have Trust Wallet?</p>
 
   <button class="btn outlined px-2 py-1">Get now</button>
 </footer>
