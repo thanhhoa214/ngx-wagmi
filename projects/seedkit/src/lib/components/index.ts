@@ -1,1 +1,1 @@
-export * from './seedkit/seedkit.component';
+export * from './connect-button/connect-button.component';

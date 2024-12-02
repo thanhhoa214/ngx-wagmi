@@ -3,10 +3,22 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
-    "@angular/core": "^18.2.0"
+    "@angular/core": "^18.2.0",
+    "@rainbow-me/rainbowkit": "^2.2.0",
+    "lucide-angular": "^0.462.0",
+    "ngxtension": "^4.1.0",
+    "qrcode": "^1.5.4",
+    "ua-parser-js": "^2.0.0",
+    "viem": "^2.21.50"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "exports": {
+    "./styles": {
+      "sass": "./src/styles/index.scss",
+      "style": "./src/styles/index.css"
+    }
+  }
 }

@@ -3,5 +3,6 @@
   "dest": "../../dist/seedkit",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "assets": [{ "input": "src/styles", "glob": "**/*.(scss|css)", "output": "styles" }]
 }

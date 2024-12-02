@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 264 84% 10%;
+    --foreground: 0 0% 100%;
+    --primary: 62 94% 62%;
+    --primary-tint: 62 94% 70%;
+    --primary-shade: 62 56% 19%;
+    --primary-foreground: 264 84% 10%;
+    --secondary: 266 49% 63%;
+    --secondary-foreground: 0 0% 100%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-primary-foreground/70;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  strong {
+    @apply font-semibold;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  /* .v2-container {
+      @apply w-full max-w-screen-2xl mx-auto p-4 md:px-8 2xl:px-0;
+    } */
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    /* Hide scrollbar for Chrome, Safari, and Opera */
+    &::-webkit-scrollbar {
+      visibility: hidden;
+      width: 0; /* Set width to 0 to hide */
+      height: 0; /* Set height to 0 to hide */
+    }
+  }
+
+  .btn {
+    @apply px-4 py-2 rounded-base font-semibold transition hover:scale-105 active:scale-95;
+  }
+  .btn.primary {
+    @apply bg-primary/90 text-primary-foreground hover:bg-primary;
+  }
+  .btn.secondary {
+    @apply text-primary-shade hover:bg-primary-shade/10;
+  }
+  .btn.outlined {
+    @apply border border-primary-shade text-primary-shade hover:bg-primary-shade/20;
+  }
+  .btn.link {
+    @apply text-primary-shade hover:underline hover:underline-offset-2;
+  }
+
+  dialog {
+    @apply rounded-base shadow-sm
+             backdrop:bg-background/50 backdrop:backdrop-blur-sm;
+  }
+}

@@ -46,5 +46,5 @@ export function injectDisconnect<context = unknown>(
     ...result,
     disconnect: mutate,
     disconnectAsync: mutateAsync,
-  };
+  } as InjectDisconnectReturnType<context>;
 }

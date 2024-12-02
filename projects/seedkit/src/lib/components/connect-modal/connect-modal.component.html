@@ -1,0 +1,50 @@
+<app-modal #connectModal [modalTitle]="title()" [(modalOpening)]="modalOpening">
+  @if (connectingConnector(); as connector) {
+    @if (connector.type === WALLET_CONNECT_CONNECTOR_ID) {
+      <app-connect-modal-qrcode [connector]="connector" class="mt-4" />
+      <button class="btn link block mx-auto" (click)="connectingConnector.set(null)">Back</button>
+    } @else {
+      <div class="mt-2 text-center py-4">
+        <img
+          [src]="iconUrls()[connector.id]"
+          [alt]="connector.name"
+          width="44"
+          height="44"
+          class="rounded-md mx-auto mb-3" />
+        <h4 class="text-background text-lg font-semibold">Opening {{ connector.name }}...</h4>
+        <p class="text-background/80 -mt-1">Confirm connection in the extension</p>
+        <footer class="flex flex-col gap-1 max-w-60 mx-auto mt-3">
+          <button class="btn primary" (click)="connect(connector)">Retry</button>
+          <button class="btn link" (click)="connectingConnector.set(null)">Back</button>
+        </footer>
+      </div>
+    }
+  } @else {
+    <ol class="w-full">
+      @for (group of connectorGroups() | keyvalue; track group.key) {
+        <li>
+          <ul>
+            <h4 class="mt-2 mb-1 text-background/80">
+              <strong>{{ group.key }}</strong>
+            </h4>
+            @for (connector of group.value; track connector.id) {
+              <li>
+                <button
+                  (click)="connect(connector)"
+                  class="flex items-center gap-2 -mx-1 p-1.5 rounded-base hover:bg-background/10 w-full transition hover:scale-105 hover:px-2 active:scale-95">
+                  <img
+                    [src]="iconUrls()[connector.id]"
+                    [alt]="connector.name"
+                    width="32"
+                    height="32"
+                    class="rounded-md" />
+                  <strong class="text-lg">{{ connector.name }}</strong>
+                </button>
+              </li>
+            }
+          </ul>
+        </li>
+      }
+    </ol>
+  }
+</app-modal>

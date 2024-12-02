@@ -8,6 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "wagmi:watch": "ng build --project ngx-wagmi --watch --configuration development",
     "seedkit:watch": "ng build --project seedkit --watch --configuration development",
+    "seedkit:build-tailwind": "tailwindcss -c projects/seedkit/tailwind.config.js -i ./projects/seedkit/src/styles/index.scss -o ./projects/seedkit/src/styles/index.css -m",
+    "seedkit:build": "ng build seedkit && npm run seedkit:build-tailwind",
     "test": "ng test",
     "serve:ssr:ngx-wagmi-example": "node dist/ngx-wagmi-example/server/server.mjs"
   },
