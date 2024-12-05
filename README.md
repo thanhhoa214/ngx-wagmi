@@ -34,7 +34,7 @@ Inspired by RainbowKit but tailored for Angular, this library makes **wallet con
 ### 🚀 Getting Started
 
 Check out the **demo page** and try it yourself:  
-👉 [Demo Page](#)
+👉 [Demo Page](https://ngx-wagmi.vercel.app/)
 
 Install the libraries and bring Web3 to your Angular app:
 
