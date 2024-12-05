@@ -1,25 +1,71 @@
-# Seedkit
+# ngx-seedkit
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
+**ngx-seedkit** is a lightweight and customizable **wallet connection library** for **Angular**, inspired by RainbowKit. Built on top of **ngx-wagmi**, it provides an elegant solution to integrate Web3 wallet connection features into your Angular applications with ease.
 
-## Code scaffolding
+## 🚀 Features
 
-Run `ng generate component component-name --project ngx-seedkit` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-seedkit`.
+- **Plug-and-play**: Pre-built UI component for wallet connection.
+- **Customizable**: Style and extend as needed.
+- **Powered by ngx-wagmi**: Seamless integration with wagmi-compatible Web3 tools.
 
-> Note: Don't forget to add `--project ngx-seedkit` or else it will be added to the default project in your `angular.json` file.
+## 📦 Installation
 
-## Build
+Install ngx-seedkit via npm:
 
-Run `ng build ngx-seedkit` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+npm install ngx-seedkit
+```
 
-## Publishing
+## 🛠️ Setup
 
-After building your library with `ng build ngx-seedkit`, go to the dist folder `cd dist/ngx-seedkit` and run `npm publish`.
+1. **Configure Assets & Styles**  
+   Update the `angular.json` file to include the library's assets & styles:
 
-## Running unit tests
+   ```json
+   "assets": [
+     {
+       "glob": "**/*",
+       "input": "node_modules/ngx-seedkit/assets",
+       "output": "/"
+     }
+   ],
+    "styles": ["node_modules/ngx-seedkit/styles/index.css", ...],
 
-Run `ng test ngx-seedkit` to execute the unit tests via [Karma](https://karma-runner.github.io).
+   ```
 
-## Further help
+2. **Use the Component**  
+   Add the `app-connect-button` component to your Angular application. This component provides a pre-built button for wallet connection.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+   Example usage in an Angular template:
+
+   ```html
+   <app-connect-button></app-connect-button>
+   ```
+
+   The button will handle wallet connections automatically, integrating with the **ngx-wagmi** backend.
+
+---
+
+## 🌟 Demo
+
+Explore the live demo and source code:  
+👉 **Demo App**: [ngx-wagmi.vercel.app](https://ngx-wagmi.vercel.app/)  
+👉 **GitHub Repository**: [ngx-wagmi](https://github.com/thanhhoa214/ngx-wagmi)
+
+---
+
+## 📖 Documentation
+
+WIP
+
+---
+
+## 💬 Feedback & Contributions
+
+We welcome your feedback and contributions! Feel free to open issues or submit pull requests on GitHub to help us improve ngx-seedkit.
+
+---
+
+## 🌟 License
+
+This library is licensed under the [MIT License](LICENSE).
