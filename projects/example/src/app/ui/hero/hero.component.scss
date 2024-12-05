@@ -1,0 +1,56 @@
+:host {
+  position: relative;
+  text-align: center;
+}
+
+img {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+h1 ~ p {
+  font-size: 1.5rem;
+  margin-top: 0.25rem;
+  color: #c5c5c5;
+}
+
+ul {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1rem 0;
+
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #f12374, #8f1af8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+footer {
+  margin-top: 1rem;
+
+  p {
+    margin-top: 0.5rem;
+  }
+
+  lucide-icon {
+    display: block;
+    width: 1.5rem;
+    margin: 0 auto;
+  }
+}

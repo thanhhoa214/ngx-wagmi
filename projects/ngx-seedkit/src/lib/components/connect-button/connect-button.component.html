@@ -1,6 +1,7 @@
 @if (account().isConnected) {
-  <button class="btn primary inline-flex items-center gap-2 pl-2 pr-2" (click)="accountModal.show()">
-    @if (avatar(); as avatar) {
+  <app-account-modal #accountModal />
+  @if (avatar(); as avatar) {
+    <button class="btn primary inline-flex items-center gap-2 pl-2 pr-2" (click)="accountModal.show()">
       <span
         class="inline-flex justify-center items-center border w-6 h-6 rounded-full shrink-0"
         [style.backgroundColor]="avatar.color + '90'">
@@ -9,7 +10,7 @@
       <strong class="text-base"> {{ account().address! | call: shortenAddress }} </strong>
       <div class="w-px h-6 bg-background/50"></div>
       <button [title]="currentChain()?.name" class="relative -ml-1 p-0.5">
-        <img src="/chainIcons{{ currentChain()?.iconUrl }}" class="w-6 h-6 rounded-full" />
+        <img src="/chain-icons{{ currentChain()?.iconUrl }}" class="w-6 h-6 rounded-full" />
 
         @if (currentChain()?.testnet) {
           <span
@@ -19,12 +20,9 @@
           >
         }
       </button>
-    }
-  </button>
-  <app-account-modal #accountModal [(modalOpening)]="modalOpenning" />
+    </button>
+  }
 } @else {
-  <app-connect-modal #connectModal [(modalOpening)]="modalOpenning" />
-  <button class="btn primary" (click)="connectModal.show()">
-    {{ modalOpenning() ? 'Connecting...' : 'Connect Wallet' }}
-  </button>
+  <app-connect-modal #connectModal />
+  <button class="btn primary" (click)="connectModal.show()">Connect Wallet</button>
 }

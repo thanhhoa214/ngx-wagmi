@@ -1,6 +1,6 @@
 <dialog
   #modal
-  (close)="hide()"
+  (close)="modalOpening.set(false)"
   class="min-w-80 min-h-20 bg-foreground/80 backdrop-blur-sm animate-in slide-in-from-bottom-20">
   @if (modalOpening()) {
     <div

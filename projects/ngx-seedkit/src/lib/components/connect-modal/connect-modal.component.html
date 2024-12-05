@@ -1,4 +1,4 @@
-<app-modal #connectModal [modalTitle]="title()" [(modalOpening)]="modalOpening">
+<app-modal #connectModal [modalTitle]="title()" [(modalOpening)]="modalOpening" contentClass="text-left">
   @if (connectingConnector(); as connector) {
     @if (connector.type === WALLET_CONNECT_CONNECTOR_ID) {
       <app-connect-modal-qrcode [connector]="connector" class="mt-4" />

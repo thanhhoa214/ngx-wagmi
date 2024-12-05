@@ -5,7 +5,6 @@ import {
   injectAccount,
   injectBalance,
   injectChains,
-  injectConfig,
   injectDisconnect,
   injectEnsAvatar,
   injectEnsName,
@@ -38,13 +37,12 @@ export class AccountModalComponent {
   readonly isSameChain = isSameChain;
 
   account = injectAccount();
-  chains = injectChains();
+  private chains = injectChains();
   private disconnectM = injectDisconnect();
   private switchChainM = injectSwitchChain();
-  config = injectConfig();
   ensNameQ = injectEnsName(() => ({ address: this.account().address }));
   ensAvatarQ = injectEnsAvatar(() => ({ name: this.ensNameQ.data()!, query: { enabled: !!this.ensNameQ.data() } }));
-  balanceQ = injectBalance(() => ({ address: this.account().address }));
+  private balanceQ = injectBalance(() => ({ address: this.account().address }));
   balanceStr = computed(() => {
     if (this.balanceQ.isLoading()) return '~ ETH';
     if (this.balanceQ.error()) return 'Error';
@@ -58,7 +56,7 @@ export class AccountModalComponent {
   copyFlashing = injectFlash();
 
   modalOpening = model(false);
-  accountModal = viewChild<string, ModalComponent>('accountModal', { read: ModalComponent });
+  private accountModal = viewChild<string, ModalComponent>('accountModal', { read: ModalComponent });
   chainDropdownOpenning = signal(false);
 
   readonly actions = [

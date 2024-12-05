@@ -1,5 +1,4 @@
 import { Component, computed, signal } from '@angular/core';
-import { ConnectButtonComponent } from 'ngx-seedkit';
 import {
   injectAccount,
   injectAccountEffect,
@@ -54,118 +53,118 @@ import {
 } from 'ngx-wagmi';
 import { Address, erc20Abi, Hash, parseEther } from 'viem';
 import { CardComponent } from '../ui/card.component';
+import { HeroComponent } from '../ui/hero/hero.component';
 
 @Component({
   standalone: true,
-  imports: [CardComponent, ConnectButtonComponent],
-  template: `<div class="p-4">
-    <p class="space-x-2">
-      <app-connect-button />
-    </p>
+  imports: [CardComponent, HeroComponent],
+  template: `<div>
+    <app-hero />
+    <div class="p-4">
+      <p class="space-x-2 ">
+        <strong>Connections</strong>
+        @for (item of connections(); track item.connector.id) {
+          <button (click)="switchAccountM.switchAccount({ connector: item.connector })" class="btn secondary">
+            Switch account from "{{ item.connector.name }}" ({{ item.connector.id }})
+          </button>
+          <br />
+          Account's addresses connected:
+          <ul>
+            @for (accAddress of item.accounts; track accAddress) {
+              <li>{{ accAddress }}</li>
+            }
+          </ul>
+        }
+      </p>
 
-    <p class="space-x-2 ">
-      <strong>Connections</strong>
-      @for (item of connections(); track item.connector.id) {
-        <button (click)="switchAccountM.switchAccount({ connector: item.connector })" class="btn secondary">
-          Switch account from "{{ item.connector.name }}" ({{ item.connector.id }})
+      <p class="space-x-2">
+        <strong>Connectors</strong>
+        @for (item of connectors(); track item.id + item.uid) {
+          <button (click)="item.connect()" class="btn secondary">Connect to {{ item.id }}</button>
+        }
+      </p>
+
+      <p class="space-x-2">
+        <strong>Switch Chain</strong>
+        @for (item of chains(); track item.id) {
+          <button (click)="switchChainM.switchChain({ chainId: item.id })" class="btn secondary">
+            Switch to {{ item.name }}
+          </button>
+        }
+      </p>
+
+      <p class="error">
+        <button
+          (click)="
+            watchAssetM.watchAssetAsync({
+              type: 'ERC20',
+              options: {
+                address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+                symbol: 'USDT',
+                decimals: 6,
+              },
+            })
+          "
+          class="btn secondary">
+          Add USDT to wallet for watching (watchAsset)
         </button>
-        <br />
-        Account's addresses connected:
-        <ul>
-          @for (accAddress of item.accounts; track accAddress) {
-            <li>{{ accAddress }}</li>
-          }
-        </ul>
-      }
-    </p>
+        {{ watchAssetM.isPending() ? 'Pending...' : '' }}
+        {{ watchAssetM.error()?.message }}
+      </p>
 
-    <p class="space-x-2">
-      <strong>Connectors</strong>
-      @for (item of connectors(); track item.id) {
-        <button (click)="item.connect()" class="btn secondary">Connect to {{ item.id }}</button>
-      }
-    </p>
+      <p class="error">
+        <button (click)="sendTx()" class="btn secondary">Send transaction</button>
+        {{ sendTxM.isPending() ? 'Pending...' : '' }}
+        {{ sendTxM.error()?.message }}
+      </p>
 
-    <p class="space-x-2">
-      <strong>Switch Chain</strong>
-      @for (item of chains(); track item.id) {
-        <button (click)="switchChainM.switchChain({ chainId: item.id })" class="btn secondary">
-          Switch to {{ item.name }}
-        </button>
-      }
-    </p>
+      <p class="error">
+        <button (click)="signMessage()" class="btn secondary">Sign message</button>
+        {{ signMessageM.isPending() ? 'Pending...' : '' }}
+        {{ signMessageM.error()?.message }}
+      </p>
 
-    <p class="error">
-      <button
-        (click)="
-          watchAssetM.watchAssetAsync({
-            type: 'ERC20',
-            options: {
-              address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-              symbol: 'USDT',
-              decimals: 6,
-            },
-          })
-        "
-        class="btn secondary">
-        Add USDT to wallet for watching (watchAsset)
-      </button>
-      {{ watchAssetM.isPending() ? 'Pending...' : '' }}
-      {{ watchAssetM.error()?.message }}
-    </p>
+      <p class="error">
+        <button (click)="signTypedData()" class="btn secondary">Sign typed data</button>
+        {{ signTypedDataM.isPending() ? 'Pending...' : '' }}
+        {{ signTypedDataM.error()?.message }}
+      </p>
+      <p class="error">
+        <button (click)="writeContract()" class="btn secondary">Write contract</button>
+        {{ writeContractM.isPending() ? 'Pending...' : '' }}
+        {{ writeContractM.error()?.message }}
+      </p>
 
-    <p class="error">
-      <button (click)="sendTx()" class="btn secondary">Send transaction</button>
-      {{ sendTxM.isPending() ? 'Pending...' : '' }}
-      {{ sendTxM.error()?.message }}
-    </p>
-
-    <p class="error">
-      <button (click)="signMessage()" class="btn secondary">Sign message</button>
-      {{ signMessageM.isPending() ? 'Pending...' : '' }}
-      {{ signMessageM.error()?.message }}
-    </p>
-
-    <p class="error">
-      <button (click)="signTypedData()" class="btn secondary">Sign typed data</button>
-      {{ signTypedDataM.isPending() ? 'Pending...' : '' }}
-      {{ signTypedDataM.error()?.message }}
-    </p>
-    <p class="error">
-      <button (click)="writeContract()" class="btn secondary">Write contract</button>
-      {{ writeContractM.isPending() ? 'Pending...' : '' }}
-      {{ writeContractM.error()?.message }}
-    </p>
-
-    <app-card title="Current block" [query]="blockQ" />
-    <app-card title="Current block tx count" [query]="blockTxCountQ" />
-    <app-card title="Balance" [query]="balanceQ" />
-    <app-card title="Bytecode" [query]="bytecodeQ" />
-    <app-card title="Connector Client" [query]="connectorClientQ" />
-    <app-card title="ensAddressQ of vitalik" [query]="ensAddressQ" />
-    <app-card title="ensNameQ of vitalik" [query]="ensNameQ" />
-    <app-card title="ensAvatarQ of vitalik" [query]="ensAvatarQ" />
-    <app-card title="ensResolverQ of vitalik" [query]="ensResolverQ" />
-    <app-card title="ensTextQ of vitalik" [query]="ensTextQ" />
-    <app-card title="feesPerGasQ" [query]="feesPerGasQ" />
-    <app-card title="gasQ" [query]="gasQ" />
-    <app-card title="maxPriorityFeePerGasQ" [query]="maxPriorityFeePerGasQ" />
-    <app-card title="feeHistoryQ" [query]="feeHistoryQ" />
-    <app-card title="gasPriceQ" [query]="gasPriceQ" />
-    <app-card title="proofQ" [query]="proofQ" />
-    <app-card title="preparedTxRequestQ" [query]="preparedTxRequestQ" />
-    <app-card title="usdtNameQ" [query]="usdtNameQ" />
-    <app-card title="usdtInfoQ" [query]="usdtInfoQ">
-      <button (click)="usdtEthAddress.set('0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9')">Fetch AAVE info</button>
-    </app-card>
-    <app-card title="storageAtQ" [query]="storageAtQ" />
-    <app-card title="txQ" [query]="txQ" />
-    <app-card title="txConfirmationsQ" [query]="txConfirmationsQ" />
-    <app-card title="txCountQ" [query]="txCountQ" />
-    <app-card title="txReceiptQ" [query]="txReceiptQ" />
-    <app-card title="verifyMessageQ" [query]="verifyMessageQ" />
-    <app-card title="verifyTypedDataQ" [query]="verifyTypedDataQ" />
-    <app-card title="walletClientQ" [query]="walletClientQ" />
+      <app-card title="Current block" [query]="blockQ" />
+      <app-card title="Current block tx count" [query]="blockTxCountQ" />
+      <app-card title="Balance" [query]="balanceQ" />
+      <app-card title="Bytecode" [query]="bytecodeQ" />
+      <app-card title="Connector Client" [query]="connectorClientQ" />
+      <app-card title="ensAddressQ of vitalik" [query]="ensAddressQ" />
+      <app-card title="ensNameQ of vitalik" [query]="ensNameQ" />
+      <app-card title="ensAvatarQ of vitalik" [query]="ensAvatarQ" />
+      <app-card title="ensResolverQ of vitalik" [query]="ensResolverQ" />
+      <app-card title="ensTextQ of vitalik" [query]="ensTextQ" />
+      <app-card title="feesPerGasQ" [query]="feesPerGasQ" />
+      <app-card title="gasQ" [query]="gasQ" />
+      <app-card title="maxPriorityFeePerGasQ" [query]="maxPriorityFeePerGasQ" />
+      <app-card title="feeHistoryQ" [query]="feeHistoryQ" />
+      <app-card title="gasPriceQ" [query]="gasPriceQ" />
+      <app-card title="proofQ" [query]="proofQ" />
+      <app-card title="preparedTxRequestQ" [query]="preparedTxRequestQ" />
+      <app-card title="usdtNameQ" [query]="usdtNameQ" />
+      <app-card title="usdtInfoQ" [query]="usdtInfoQ">
+        <button (click)="usdtEthAddress.set('0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9')">Fetch AAVE info</button>
+      </app-card>
+      <app-card title="storageAtQ" [query]="storageAtQ" />
+      <app-card title="txQ" [query]="txQ" />
+      <app-card title="txConfirmationsQ" [query]="txConfirmationsQ" />
+      <app-card title="txCountQ" [query]="txCountQ" />
+      <app-card title="txReceiptQ" [query]="txReceiptQ" />
+      <app-card title="verifyMessageQ" [query]="verifyMessageQ" />
+      <app-card title="verifyTypedDataQ" [query]="verifyTypedDataQ" />
+      <app-card title="walletClientQ" [query]="walletClientQ" />
+    </div>
   </div>`,
   styles: [
     `
@@ -313,6 +312,10 @@ export default class HomePage {
   pendingTxs = injectWatchPendingTransactions(() => ({
     onTransactions: (txs) => console.log('txs', txs),
   }));
+
+  ngOnInit() {
+    this.reconnectM.reconnectAsync();
+  }
 
   sendTx() {
     this.sendTxM.sendTransaction({

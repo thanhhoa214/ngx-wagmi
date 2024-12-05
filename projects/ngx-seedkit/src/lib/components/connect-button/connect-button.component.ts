@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { injectAccount } from 'ngx-wagmi';
@@ -29,7 +29,6 @@ export class ConnectButtonComponent {
   });
 
   connectModal = viewChild<string, ModalComponent>('connectModal', { read: ModalComponent });
-  modalOpenning = signal(false);
 
   constructor() {
     effect(
