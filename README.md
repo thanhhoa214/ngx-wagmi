@@ -1,27 +1,51 @@
-# Ngwagmi
+# 🚀 ngx-wagmi & ngx-seedkit
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.1.
+## Introducing Two New Libraries for Angular + Web3
 
-## Development server
+In just one week, I’ve built **two powerful libraries** to bridge the gap between **Angular** and **Web3**, making blockchain development smoother and faster for Angular developers. Let me introduce you to:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### ✨ **ngx-wagmi**
 
-## Code scaffolding
+A fully **wagmi-compatible library for Angular 18**, built entirely with **Signal** for blazing-fast performance and seamless reactivity. Think of it as the essential toolkit to connect your Angular app to the blockchain, bringing powerful wallet and contract interactions to your fingertips.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 🌈 **ngx-seedkit**
 
-## Build
+Inspired by RainbowKit but tailored for Angular, this library makes **wallet connection integration** a breeze. Powered by **ngx-wagmi**, it enables you to add wallet functionality to your application with minimal effort.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+---
 
-## Running unit tests
+### 🎯 **What’s Included?**
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **ngx-wagmi**: A robust library for wallet connections and blockchain interactions.
+- **ngx-seedkit**: A plug-and-play toolkit for creating stunning wallet connection UIs.
+- A comprehensive **demo page**, showcasing nearly every function these libraries offer, so you can experience their full potential right away.
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### 🌟 Why Use ngx-wagmi & ngx-seedkit?
 
-## Further help
+- **Angular-First**: Designed for Angular 18, optimized for Signals.
+- **Ease of Use**: Intuitive APIs for quick integration.
+- **Flexibility**: Customize and extend to suit your needs.
+- **Web3 Ready**: Wallet connections, contract calls, and beyond.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+### 🚀 Getting Started
+
+Check out the **demo page** and try it yourself:  
+👉 [Demo Page](#)
+
+Install the libraries and bring Web3 to your Angular app:
+
+```bash
+npm install ngx-wagmi ngx-seedkit
+```
+
+Documentation coming soon! Stay tuned for guides and examples.
+
+---
+
+### 🎉 Let’s Build Web3 Together!
+
+Feedback, issues, or feature requests? I’d love to hear from you.
