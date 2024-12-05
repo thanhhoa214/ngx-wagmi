@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ArrowDown, Github, LucideAngularModule, Send } from 'lucide-angular';
+import { ArrowDown, Github, Linkedin, LucideAngularModule, Mail } from 'lucide-angular';
 import { ConnectButtonComponent } from 'ngx-seedkit';
 
 @Component({
@@ -11,5 +11,5 @@ import { ConnectButtonComponent } from 'ngx-seedkit';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroComponent {
-  icons = { ArrowDown, Send, Github };
+  icons = { ArrowDown, Mail, Github, Linkedin };
 }

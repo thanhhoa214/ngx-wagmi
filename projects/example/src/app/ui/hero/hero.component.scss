@@ -1,6 +1,8 @@
 :host {
+  display: block;
   position: relative;
   text-align: center;
+  padding: 2rem;
 }
 
 img {
@@ -26,6 +28,11 @@ ul {
   justify-content: center;
   gap: 1.5rem;
   margin: 1rem 0;
+
+  img {
+    width: 2rem;
+    height: 2rem;
+  }
 
   a {
     display: flex;
