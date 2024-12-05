@@ -1,5 +1,10 @@
 import { provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  isDevMode,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
@@ -12,6 +17,7 @@ import {
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { provideTanStackQuery, QueryClient, withDevtools } from '@tanstack/angular-query-experimental';
+import { inject } from '@vercel/analytics';
 import { createConfig, http } from '@wagmi/core';
 import { arbitrumSepolia, baseSepolia, mainnet } from '@wagmi/core/chains';
 import { provideHighlightOptions } from 'ngx-highlightjs';
@@ -47,6 +53,12 @@ const defaultConfig = createConfig({
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => {
+        inject({ mode: isDevMode() ? 'development' : 'production' });
+      },
+    },
     provideExperimentalZonelessChangeDetection(),
     provideRouter(routes),
     provideClientHydration(),
