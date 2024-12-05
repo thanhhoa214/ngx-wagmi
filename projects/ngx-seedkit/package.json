@@ -20,5 +20,9 @@
       "sass": "./src/styles/index.scss",
       "style": "./src/styles/index.css"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thanhhoa214/ngx-wagmi/tree/main/projects/ngx-seedkit"
   }
 }
