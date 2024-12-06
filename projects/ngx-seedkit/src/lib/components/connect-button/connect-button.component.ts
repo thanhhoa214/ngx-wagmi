@@ -10,11 +10,12 @@ import { emojiAvatarForAddress } from './emojiAvatarForAddress';
 import { provideRainbowKitChains } from './provideRainbowKitChains';
 
 @Component({
-  selector: 'app-connect-button',
+  selector: 'sk-connect-button',
   standalone: true,
   imports: [LucideAngularModule, ConnectWalletModalComponent, CallPipe, FormsModule, AccountModalComponent],
   templateUrl: './connect-button.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'sk-connect-button' },
 })
 export class ConnectButtonComponent {
   readonly emojiAvatarForAddress = emojiAvatarForAddress;

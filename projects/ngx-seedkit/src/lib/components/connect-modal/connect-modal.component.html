@@ -1,44 +1,44 @@
-<app-modal #connectModal [modalTitle]="title()" [(modalOpening)]="modalOpening" contentClass="text-left">
+<app-modal #connectModal [modalTitle]="title()" [(modalOpening)]="modalOpening" contentClass="sk-text-left">
   @if (connectingConnector(); as connector) {
     @if (connector.type === WALLET_CONNECT_CONNECTOR_ID) {
-      <app-connect-modal-qrcode [connector]="connector" class="mt-4" />
-      <button class="btn link block mx-auto" (click)="connectingConnector.set(null)">Back</button>
+      <app-connect-modal-qrcode [connector]="connector" class="sk-mt-4" />
+      <button class="sk-btn sk-link sk-block sk-mx-auto" (click)="connectingConnector.set(null)">Back</button>
     } @else {
-      <div class="mt-2 text-center py-4">
+      <div class="sk-mt-2 sk-text-center sk-py-4">
         <img
           [src]="iconUrls()[connector.id]"
           [alt]="connector.name"
           width="44"
           height="44"
-          class="rounded-md mx-auto mb-3" />
-        <h4 class="text-background text-lg font-semibold">Opening {{ connector.name }}...</h4>
-        <p class="text-background/80 -mt-1">Confirm connection in the extension</p>
-        <footer class="flex flex-col gap-1 max-w-60 mx-auto mt-3">
-          <button class="btn primary" (click)="connect(connector)">Retry</button>
-          <button class="btn link" (click)="connectingConnector.set(null)">Back</button>
+          class="sk-rounded-md sk-mx-auto sk-mb-3" />
+        <h4 class="sk-text-background sk-text-lg sk-font-semibold">Opening {{ connector.name }}...</h4>
+        <p class="sk-text-background/80 -sk-mt-1">Confirm connection in the extension</p>
+        <footer class="sk-flex sk-flex-col sk-gap-1 sk-max-w-60 sk-mx-auto sk-mt-3">
+          <button class="sk-btn sk-primary" (click)="connect(connector)">Retry</button>
+          <button class="sk-btn sk-link" (click)="connectingConnector.set(null)">Back</button>
         </footer>
       </div>
     }
   } @else {
-    <ol class="w-full">
+    <ol class="sk-w-full">
       @for (group of connectorGroups() | keyvalue; track group.key) {
         <li>
           <ul>
-            <h4 class="mt-2 mb-1 text-background/80">
+            <h4 class="sk-mt-2 sk-mb-1 sk-text-background/80">
               <strong>{{ group.key }}</strong>
             </h4>
             @for (connector of group.value; track connector.id) {
               <li>
                 <button
                   (click)="connect(connector)"
-                  class="flex items-center gap-2 -mx-1 p-1.5 rounded-base hover:bg-background/10 w-full transition hover:scale-105 hover:px-2 active:scale-95">
+                  class="sk-flex sk-items-center sk-gap-2 -sk-mx-1 sk-p-1.5 sk-rounded-base hover:sk-bg-background/10 sk-w-full sk-transition hover:sk-scale-105 hover:sk-px-2 active:sk-scale-95">
                   <img
                     [src]="iconUrls()[connector.id]"
                     [alt]="connector.name"
                     width="32"
                     height="32"
-                    class="rounded-md" />
-                  <strong class="text-lg">{{ connector.name }}</strong>
+                    class="sk-rounded-md" />
+                  <strong class="sk-text-lg">{{ connector.name }}</strong>
                 </button>
               </li>
             }

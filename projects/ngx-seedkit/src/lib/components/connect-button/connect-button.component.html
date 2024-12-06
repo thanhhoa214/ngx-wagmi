@@ -1,28 +1,30 @@
 @if (account().isConnected) {
   <app-account-modal #accountModal />
   @if (avatar(); as avatar) {
-    <button class="btn primary inline-flex items-center gap-2 pl-2 pr-2" (click)="accountModal.show()">
+    <button class="sk-btn sk-primary sk-inline-center sk-gap-2 sk-px-2" (click)="accountModal.show()">
       <span
-        class="inline-flex justify-center items-center border w-6 h-6 rounded-full shrink-0"
+        class="sk-inline-center sk-border sk-border-solid sk-w-6 sk-h-6 sk-rounded-full sk-shrink-0 sk-text-base"
         [style.backgroundColor]="avatar.color + '90'">
         {{ avatar.emoji }}
       </span>
-      <strong class="text-base"> {{ account().address! | call: shortenAddress }} </strong>
-      <div class="w-px h-6 bg-background/50"></div>
-      <button [title]="currentChain()?.name" class="relative -ml-1 p-0.5">
-        <img src="/chain-icons{{ currentChain()?.iconUrl }}" class="w-6 h-6 rounded-full" />
+      <strong class="sk-text-base sk-font-semibold"> {{ account().address! | call: shortenAddress }} </strong>
+      <div class="sk-w-px sk-h-6 sk-bg-background/50"></div>
+      <span
+        [title]="currentChain()?.name"
+        class="sk-appearance-none sk-border-none sk-bg-transparent sk-inline-flex sk-relative -sk-ml-1 sk-p-0.5">
+        <img src="/chain-icons{{ currentChain()?.iconUrl }}" class="sk-w-6 sk-h-6 sk-rounded-full" />
 
         @if (currentChain()?.testnet) {
           <span
-            class="rounded-full inline-flex justify-center items-center w-3 h-3 text-[8px] font-bold bg-red-400 absolute bottom-0 right-0"
+            class="sk-rounded-full sk-inline-center sk-w-3 sk-h-3 sk-text-[8px] sk-font-bold sk-bg-red-400 sk-absolute sk-bottom-0 sk-right-0"
             title="Testnet"
             >T</span
           >
         }
-      </button>
+      </span>
     </button>
   }
 } @else {
   <app-connect-modal #connectModal />
-  <button class="btn primary" (click)="connectModal.show()">Connect Wallet</button>
+  <button class="sk-btn sk-primary" (click)="connectModal.show()">Connect Wallet</button>
 }

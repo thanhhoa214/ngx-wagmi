@@ -1,24 +1,25 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  prefix: 'sk-',
   content: ['./projects/ngx-seedkit/src/**/*.{html,ts}'],
   theme: {
     extend: {
       colors: {
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        background: 'hsl(var(--sk-background))',
+        foreground: 'hsl(var(--sk-foreground))',
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-          tint: 'hsl(var(--primary-tint))',
-          shade: 'hsl(var(--primary-shade))',
+          DEFAULT: 'hsl(var(--sk-primary))',
+          foreground: 'hsl(var(--sk-primary-foreground))',
+          tint: 'hsl(var(--sk-primary-tint))',
+          shade: 'hsl(var(--sk-primary-shade))',
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: 'hsl(var(--sk-secondary))',
+          foreground: 'hsl(var(--sk-secondary-foreground))',
         },
       },
       borderRadius: {
-        base: 'var(--radius)',
+        base: 'var(--sk-radius)',
       },
     },
   },

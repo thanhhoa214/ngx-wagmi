@@ -10,7 +10,7 @@
     "wagmi:build": "ng build ngx-wagmi",
     "wagmi:publish": "cd projects/ngx-wagmi && npm version patch && cd ../../ && ng build ngx-wagmi && cd dist/ngx-wagmi && npm publish",
     "seedkit:watch": "ng build ngx-seedkit --watch --configuration development",
-    "seedkit:build-tailwind": "tailwindcss -c projects/ngx-seedkit/tailwind.config.js -i ./projects/ngx-seedkit/src/styles/index.scss -o ./projects/ngx-seedkit/src/styles/index.css -m",
+    "seedkit:build-tailwind": "tailwindcss -c projects/ngx-seedkit/tailwind.config.js -i ./projects/ngx-seedkit/src/styles/index.scss -o ./projects/ngx-seedkit/src/styles/index.css -m --watch",
     "seedkit:build": "npm run seedkit:build-tailwind && ng build ngx-seedkit",
     "seedkit:publish": "cd projects/ngx-seedkit && npm version patch && cd ../../ && npm run seedkit:build && cd dist/ngx-seedkit && npm publish",
     "test": "ng test",
@@ -65,6 +65,7 @@
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.15",
     "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-scoped-preflight": "^3.4.9",
     "typescript": "~5.4.2"
   }
 }

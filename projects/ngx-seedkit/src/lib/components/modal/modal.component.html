@@ -1,16 +1,17 @@
 <dialog
   #modal
   (close)="modalOpening.set(false)"
-  class="min-w-80 min-h-20 bg-foreground/80 backdrop-blur-sm animate-in slide-in-from-bottom-20">
+  class="sk-min-w-80 sk-min-h-20 sk-bg-foreground/80 sk-backdrop-blur-sm sk-animate-in sk-slide-in-from-bottom-20">
   @if (modalOpening()) {
     <div
-      [class]="tm('py-4 px-6 rounded-xl relative', contentClass())"
+      [class]="tm('sk-py-4 sk-px-6 sk-rounded-xl sk-relative', contentClass())"
       (clickOutside)="closeOnBackdropClick() && hide()">
-      <header class="w-full flex justify-between items-center gap-2 mb-2">
-        <h3 class="text-lg font-bold text-primary-foreground">{{ title() }}</h3>
-        <form method="dialog" class="inline-flex">
+      <header class="sk-w-full sk-flex sk-justify-between sk-items-center sk-gap-2 sk-mb-2">
+        <h3 class="sk-text-lg sk-font-bold sk-text-primary-foreground">{{ title() }}</h3>
+        <form method="dialog" class="sk-inline-flex">
           <!-- if there is a button in form, it will close the modal -->
-          <button class="transition-transform hover:scale-105 active:scale-95">
+          <button
+            class="sk-border-none sk-bg-transparent sk-text-background sk-transition-transform hover:sk-scale-105 active:sk-scale-95">
             <lucide-icon [img]="xIcon" />
           </button>
         </form>

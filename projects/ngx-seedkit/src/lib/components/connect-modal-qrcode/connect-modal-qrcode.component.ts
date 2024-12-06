@@ -11,7 +11,7 @@ export const WALLET_CONNECT_CONNECTOR_ID = 'walletConnect';
   imports: [QRCodeComponent],
   templateUrl: './connect-modal-qrcode.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'block' },
+  host: { class: 'sk-block' },
 })
 export class ConnectModalQrcodeComponent {
   placeholderUri =

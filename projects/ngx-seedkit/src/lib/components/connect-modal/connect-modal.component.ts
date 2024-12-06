@@ -18,7 +18,7 @@ import { ModalComponent } from '../modal/modal.component';
   imports: [ModalComponent, ConnectModalQrcodeComponent, KeyValuePipe],
   templateUrl: './connect-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flex flex-col items-center justify-center' },
+  host: { class: 'sk-flex-center sk-flex-col' },
 })
 export class ConnectWalletModalComponent {
   readonly WALLET_CONNECT_CONNECTOR_ID = WALLET_CONNECT_CONNECTOR_ID;

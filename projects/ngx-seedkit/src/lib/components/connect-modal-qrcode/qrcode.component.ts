@@ -38,8 +38,11 @@ const generateMatrix = (value: string, errorCorrectionLevel: QRCodeUtil.QRCodeEr
 @Component({
   selector: 'app-qrcode',
   template: `
-    <div class="select-none" [style.height.px]="size()" [style.width.px]="size()">
-      <div class="relative flex justify-center h-0" [style.width.px]="size()" [style.top.px]="logoPosition()">
+    <div class="sk-select-none" [style.height.px]="size()" [style.width.px]="size()">
+      <div
+        class="sk-relative sk-flex sk-justify-center sk-h-0"
+        [style.width.px]="size()"
+        [style.top.px]="logoPosition()">
         <img
           [src]="logoUrl()"
           [style.backgroundColor]="logoBackground()"
@@ -47,7 +50,7 @@ const generateMatrix = (value: string, errorCorrectionLevel: QRCodeUtil.QRCodeEr
           [width]="logoSize()"
           [style.height.px]="logoSize()"
           [style.width.px]="logoSize()"
-          class="rounded-base aspect-square" />
+          class="sk-rounded-base sk-aspect-square" />
       </div>
       <svg [attr.height]="size()" [attr.width]="size()" style="all: revert;">
         <title>QR Code</title>
@@ -79,7 +82,7 @@ const generateMatrix = (value: string, errorCorrectionLevel: QRCodeUtil.QRCodeEr
     </div>
   `,
   standalone: true,
-  host: { class: 'block w-max px-2 mx-auto' },
+  host: { class: 'sk-block sk-w-max sk-px-2 sk-mx-auto' },
 })
 export class QRCodeComponent {
   readonly uri = input.required<string>();
