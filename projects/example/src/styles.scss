@@ -4,3 +4,30 @@
 .error {
   color: red;
 }
+
+.p-4 {
+  padding: 1rem;
+}
+
+.space-x-2 > * + * {
+  margin-left: 0.5rem;
+}
+
+body {
+  background-color: hsl(var(--sk-background));
+  color: hsl(var(--sk-foreground));
+}
+
+.btn {
+  background-color: hsl(var(--sk-primary) / 10%);
+  color: hsl(var(--sk-foreground));
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  text-decoration: none !important;
+  margin-bottom: 0.25rem;
+
+  &:hover {
+    background-color: hsl(var(--sk-primary) / 20%);
+  }
+}
