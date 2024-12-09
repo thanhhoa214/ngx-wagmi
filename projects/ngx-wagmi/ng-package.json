@@ -3,5 +3,6 @@
   "dest": "../../dist/ngx-wagmi",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["tslib", "ngxtension"]
 }

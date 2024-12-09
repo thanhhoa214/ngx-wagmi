@@ -1,17 +1,16 @@
 {
   "name": "ngx-wagmi",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
     "@tanstack/angular-query-experimental": "^5.61.3",
-    "@wagmi/connectors": "^5.5.0",
     "@wagmi/core": "^2.15.0",
-    "ngxtension": "^4.1.0",
     "viem": "^2.21.50"
   },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "ngxtension": "^4.1.0"
   },
   "sideEffects": false,
   "repository": {

@@ -1,7 +1,7 @@
 <dialog
   #modal
   (close)="modalOpening.set(false)"
-  class="sk-min-w-80 sk-min-h-20 sk-bg-foreground/80 sk-backdrop-blur-sm sk-animate-in sk-slide-in-from-bottom-20">
+  class="sk-min-w-80 sk-min-h-20 sk-text-background sk-bg-foreground/80 sk-backdrop-blur-sm sk-animate-in sk-slide-in-from-bottom-20">
   @if (modalOpening()) {
     <div
       [class]="tm('sk-py-4 sk-px-6 sk-rounded-xl sk-relative', contentClass())"

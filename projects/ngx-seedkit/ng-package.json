@@ -11,5 +11,6 @@
       "output": "assets"
     },
     { "input": "src/styles", "glob": "**/*.(scss|css)", "output": "styles" }
-  ]
+  ],
+  "allowedNonPeerDependencies": ["tslib", "qrcode", "ua-parser-js", "lucide-angular", "tailwind-merge", "ngxtension"]
 }
