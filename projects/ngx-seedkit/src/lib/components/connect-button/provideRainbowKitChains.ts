@@ -1,4 +1,5 @@
 // Source from: https://github.com/rainbow-me/rainbowkit/blob/main/packages/rainbowkit/src/components/RainbowKitProvider/provideRainbowKitChains.ts
+import { injectChains } from 'ngx-wagmi';
 import { Chain } from 'viem';
 
 export interface RainbowKitChain extends Chain {
@@ -264,3 +265,8 @@ export const provideRainbowKitChains = <Chain extends RainbowKitChain>(
       iconBackground: chain.iconBackground ?? defaultMetadata.iconBackground,
     } as Chain;
   });
+
+export const injectRkChains = () => {
+  const chains = injectChains();
+  return provideRainbowKitChains(chains());
+};

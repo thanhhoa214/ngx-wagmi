@@ -1,11 +1,11 @@
 {
   "name": "ngx-seedkit",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
     "@rainbow-me/rainbowkit": "^2.2.0",
-    "ngx-wagmi": "^0.0.4"
+    "ngx-wagmi": "^0.0.5"
   },
   "dependencies": {
     "tslib": "^2.3.0",
