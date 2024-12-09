@@ -28,6 +28,8 @@ export function injectPublicClient<
 >(parametersFn: () => InjectPublicClientParameters<config, chainId> = emptyObjFn) {
   const config = injectConfig();
   const publicClient = signal(getPublicClient(config, parametersFn()));
-  effect((onClean) => onClean(watchPublicClient(config, { ...parametersFn(), onChange: publicClient.set })));
+  effect((onClean) => onClean(watchPublicClient(config, { ...parametersFn(), onChange: publicClient.set })), {
+    allowSignalWrites: true,
+  });
   return publicClient.asReadonly();
 }

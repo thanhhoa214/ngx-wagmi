@@ -6,6 +6,6 @@ import { InjectConnectorsParameters } from './connectors';
 export const injectAccount = (parameters: InjectConnectorsParameters = {}) => {
   const config = injectConfig(parameters);
   const account = signal(getAccount(config));
-  effect((onClean) => onClean(watchAccount(config, { onChange: account.set })));
+  effect((onClean) => onClean(watchAccount(config, { onChange: account.set })), { allowSignalWrites: true });
   return account.asReadonly();
 };

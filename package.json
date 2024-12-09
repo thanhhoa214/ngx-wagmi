@@ -36,7 +36,7 @@
     "lucide-angular": "^0.462.0",
     "ngx-highlightjs": "^12.0.0",
     "ngx-seedkit": "^0.0.6",
-    "ngx-wagmi": "^0.0.4",
+    "ngx-wagmi": "^0.0.5",
     "ngxtension": "^4.1.0",
     "qrcode": "^1.5.4",
     "rxjs": "~7.8.0",

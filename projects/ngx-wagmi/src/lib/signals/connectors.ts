@@ -12,6 +12,6 @@ export type InjectConnectorsReturnType = GetConnectorsReturnType;
 export function injectConnectors(): Signal<InjectConnectorsReturnType> {
   const config = injectConfig();
   const connectors = signal<InjectConnectorsReturnType>(getConnectors(config));
-  effect((onClean) => onClean(watchConnectors(config, { onChange: connectors.set })));
+  effect((onClean) => onClean(watchConnectors(config, { onChange: connectors.set })), { allowSignalWrites: true });
   return connectors.asReadonly();
 }

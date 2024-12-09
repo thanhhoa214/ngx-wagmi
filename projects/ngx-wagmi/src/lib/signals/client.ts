@@ -29,6 +29,6 @@ export function injectClient<
 >(parametersFn: () => InjectClientParameters<config, chainId> = emptyObjFn) {
   const config = injectConfig();
   const client = signal(getClient(config, parametersFn()));
-  effect((onClean) => onClean(watchClient(config, { onChange: client.set })));
+  effect((onClean) => onClean(watchClient(config, { onChange: client.set })), { allowSignalWrites: true });
   return client.asReadonly();
 }

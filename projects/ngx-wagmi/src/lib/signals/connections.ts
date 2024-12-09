@@ -12,6 +12,6 @@ export type UseConnectionsReturnType = GetConnectionsReturnType;
 export function injectConnections(parameters: UseConnectionsParameters = {}) {
   const config = injectConfig(parameters);
   const conns = signal(getConnections(config));
-  effect((onClean) => onClean(watchConnections(config, { onChange: conns.set })));
+  effect((onClean) => onClean(watchConnections(config, { onChange: conns.set })), { allowSignalWrites: true });
   return conns.asReadonly();
 }
